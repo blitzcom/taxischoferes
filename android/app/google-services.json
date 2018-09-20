@@ -1,0 +1,262 @@
+{
+  "project_info": {
+    "project_number": "715449895595",
+    "firebase_url": "https://jupiter-9b937.firebaseio.com",
+    "project_id": "jupiter-9b937",
+    "storage_bucket": "jupiter-9b937.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715449895595:android:3a8d12b6675f9479",
+        "android_client_info": {
+          "package_name": "com.f4.heytaxy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715449895595-lm6brl9irtiag4pq175n6jn3l976vca6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.f4.heytaxy",
+            "certificate_hash": "f02da919da0167505161399d89f279d79c48b776"
+          }
+        },
+        {
+          "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfX0hl_ZZ0Wr5upEEiu28e4qNU0z-3VL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715449895595:android:60d0cc190d63dd05",
+        "android_client_info": {
+          "package_name": "com.f4.taxischoferes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715449895595-h7u2q345ld2hofp4pvaejt1fs350qqo1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.f4.taxischoferes",
+            "certificate_hash": "6a0452b06953ecb893fa41aca5e504831ed13d2e"
+          }
+        },
+        {
+          "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfX0hl_ZZ0Wr5upEEiu28e4qNU0z-3VL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715449895595:android:15242e26c40ae15b",
+        "android_client_info": {
+          "package_name": "com.f4labs.taxischoferes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715449895595-ghldpn7lck2s9g9dp6lu5ei2o4l5ifk0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.f4labs.taxischoferes",
+            "certificate_hash": "f02da919da0167505161399d89f279d79c48b776"
+          }
+        },
+        {
+          "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfX0hl_ZZ0Wr5upEEiu28e4qNU0z-3VL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715449895595:android:2a8865e30dc9f59d",
+        "android_client_info": {
+          "package_name": "com.taxiclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715449895595-ctmsqn75vsfa7r66ce9m8be1pcmipgr4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taxiclient",
+            "certificate_hash": "daec2ae6fd2e2f8f9b212c0fe5ffcef737b3bae3"
+          }
+        },
+        {
+          "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfX0hl_ZZ0Wr5upEEiu28e4qNU0z-3VL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715449895595:android:43ac383c3de542fd",
+        "android_client_info": {
+          "package_name": "com.taxischoferes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfX0hl_ZZ0Wr5upEEiu28e4qNU0z-3VL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:715449895595:android:7f68083b58f44403",
+        "android_client_info": {
+          "package_name": "com.taxisclientes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "715449895595-ii7jps59qnq2srqomu8or9sct2du6bvt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taxisclientes",
+            "certificate_hash": "a210b1b225095d6bf3c8a748424a707299371000"
+          }
+        },
+        {
+          "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfX0hl_ZZ0Wr5upEEiu28e4qNU0z-3VL8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
