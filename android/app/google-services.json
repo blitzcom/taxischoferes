@@ -191,6 +191,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "715449895595-37jsu0neit8614r2bjb44oq2815j0nu7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.taxischoferes",
+            "certificate_hash": "6a0452b06953ecb893fa41aca5e504831ed13d2e"
+          }
+        },
+        {
           "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -205,8 +213,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "715449895595-5e419mnnuml5omqgr2ov5jb77hsufqce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
