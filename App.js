@@ -9,6 +9,7 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
+import MapView from "react-native-maps";
 
 const instructions = Platform.select({
   ios: "Press Cmd+R to reload,\n" + "Cmd+D or shake for dev menu",
@@ -27,10 +28,12 @@ export default class App extends Component<Props> {
   async onLogin() {
     console.warn("login in with facebook");
 
-    const result = await LoginManager.logInWithReadPermissions(["public_profile"]);
+    const result = await LoginManager.logInWithReadPermissions([
+      "public_profile"
+    ]);
 
     if (result.isCancelled) {
-      return console.warn('cancelado')
+      return console.warn("cancelado");
     }
 
     if (result.error) {
@@ -85,6 +88,15 @@ export default class App extends Component<Props> {
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
         <Button onPress={this.onLogin} title="Facebook" />
+        <MapView
+          style={{ ...StyleSheet.absoluteFillObject }}
+          region={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121
+          }}
+        />
       </View>
     );
   }
