@@ -2,6 +2,7 @@ package com.taxischoferes;
 
 import android.app.Application;
 
+import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
@@ -33,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
             new FBSDKPackage(mCallbackManager),
             new RNFirebasePackage(),
             new RNFirebaseDatabasePackage(),
-            new RNFirebaseAuthPackage()
+            new RNFirebaseAuthPackage(),
+            new MapsPackage()
       );
     }
 
