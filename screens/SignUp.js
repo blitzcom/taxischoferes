@@ -3,23 +3,31 @@
  * @flow
  */
 
-import { Button, Text, View, TextInput } from "react-native";
-import firebase from "react-native-firebase";
 import React, { Component } from "react";
+import firebase from "react-native-firebase";
+import type { NavigationScreenProps } from "react-navigation";
+import { Button, Text, View, TextInput } from "react-native";
 
-export default class SignUp extends Component {
-  constructor(props) {
+type State = {
+  email: string,
+  password: string
+};
+
+type Props = {
+  navigation: NavigationScreenProps<*>
+};
+
+export default class SignUp extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       email: "",
       password: ""
     };
-
-    this.onSignUp = this.onSignUp.bind(this);
   }
 
-  async onSignUp() {
+  onSignUp = async () => {
     try {
       const user = await firebase
         .auth()
@@ -29,7 +37,7 @@ export default class SignUp extends Component {
     } catch (error) {
       console.warn(error);
     }
-  }
+  };
 
   render() {
     return (

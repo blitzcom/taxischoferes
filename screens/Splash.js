@@ -4,10 +4,13 @@
  */
 
 import React, { Component } from "react";
-import { View, Text } from "react-native";
 import firebase from "react-native-firebase";
+import type { NavigationScreenProp } from "react-navigation";
+import { View, Text } from "react-native";
 
-export default class Splash extends Component {
+type Props = { navigation: NavigationScreenProp<*> };
+
+export default class Splash extends Component<Props> {
   static navigationOptions = {
     header: null
   };
