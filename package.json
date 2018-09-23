@@ -12,7 +12,8 @@
     "react-native": "0.57.0",
     "react-native-fbsdk": "^0.8.0",
     "react-native-firebase": "^5.0.0-rc4",
-    "react-native-maps": "^0.21.0"
+    "react-native-maps": "^0.21.0",
+    "react-navigation": "^2.16.0"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
