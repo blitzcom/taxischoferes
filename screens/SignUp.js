@@ -6,7 +6,7 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
 import type { NavigationScreenProps } from "react-navigation";
-import { Button, Text, View, TextInput } from "react-native";
+import { Title, View, Button, Text } from "@shoutem/ui";
 
 type Props = {
   navigation: NavigationScreenProps<*>
@@ -24,10 +24,19 @@ export default class SignUp extends Component<Props> {
   render() {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <View style={{ width: "60%" }}>
-          <Text>Revisa tu correo!</Text>
+        <View style={{ width: "80%" }}>
+          <Title styleName="h-center" style={{ marginBottom: 40 }}>
+            ¡HEY! TAXI
+          </Title>
 
-          <Button onPress={this.onRetry} title="Volver a intentar!" />
+          <Text styleName="h-center" style={{ marginBottom: 40 }}>
+            Revisa tu correo electrónico. Te enviamos un enlace para que puedas
+            acceder a tu cuenta.
+          </Text>
+
+          <Button styleName="clear" onPress={this.onRetry}>
+            <Text>Volver a intentar</Text>
+          </Button>
         </View>
       </View>
     );
