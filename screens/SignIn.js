@@ -3,10 +3,21 @@
  * @flow
  */
 
-import { AsyncStorage, Button, Text, View, TextInput } from "react-native";
+import { AsyncStorage } from "react-native";
 import firebase from "react-native-firebase";
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import type { NavigationScreenProps } from "react-navigation";
+import {
+  View,
+  Caption,
+  Text,
+  Title,
+  Subtitle,
+  Button,
+  TextInput,
+  FormGroup,
+  Spinner
+} from "@shoutem/ui";
 
 type Props = {
   navigation: NavigationScreenProps<*>
@@ -72,23 +83,39 @@ export default class SignIn extends Component<Props, State> {
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <View style={{ width: "60%" }}>
-          <Text>Correo electrónico</Text>
-          <TextInput
-            onChangeText={email => this.setState({ email })}
-            style={{ height: 40 }}
-            placeholder="example@mail.com"
-            editable={!isSending}
-            keyboardType="email-address"
-          />
+        <View style={{ width: "80%" }}>
+          <Title styleName="h-center" style={{ marginBottom: 2 }}>
+            ¡HEY! TAXI
+          </Title>
 
-          <Button
-            disabled={emailIsEmpty}
-            onPress={this.onLogin}
-            title="Iniciar sesión"
-          />
+          <Caption styleName="h-center" style={{ marginBottom: 40 }}>
+            Conductores
+          </Caption>
 
-          {isSending && <Text>Enviando</Text>}
+          {isSending ? (
+            <Spinner />
+          ) : (
+            <Fragment>
+              <Text styleName="h-center" style={{ marginBottom: 18 }}>
+                Accede a tu cuenta. Si aún no tienes, se creará automáticamente.
+              </Text>
+
+              <FormGroup>
+                <Caption>EMAIL</Caption>
+                <TextInput
+                  onChangeText={email => this.setState({ email })}
+                  placeholder="example@mail.com"
+                  editable={!isSending}
+                  keyboardType="email-address"
+                  style={{ marginBottom: 45 }}
+                />
+              </FormGroup>
+
+              <Button disabled={emailIsEmpty} onPress={this.onLogin}>
+                <Text>Iniciar sesión</Text>
+              </Button>
+            </Fragment>
+          )}
         </View>
       </View>
     );
