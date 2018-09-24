@@ -14,6 +14,7 @@ import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.soloader.SoLoader;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage;
+import io.invertase.firebase.links.RNFirebaseLinksPackage;
 import io.invertase.firebase.RNFirebasePackage;
 
 import java.util.Arrays;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
             new RNFirebasePackage(),
             new RNFirebaseDatabasePackage(),
             new RNFirebaseAuthPackage(),
+            new RNFirebaseLinksPackage(),
             new MapsPackage()
       );
     }
