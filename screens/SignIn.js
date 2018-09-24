@@ -3,10 +3,10 @@
  * @flow
  */
 
-import React, { Component } from "react";
+import { AsyncStorage, Button, Text, View, TextInput } from "react-native";
 import firebase from "react-native-firebase";
+import React, { Component } from "react";
 import type { NavigationScreenProps } from "react-navigation";
-import { Button, Text, View, TextInput } from "react-native";
 
 type Props = {
   navigation: NavigationScreenProps<*>
@@ -14,7 +14,7 @@ type Props = {
 
 type State = {
   email: string,
-  password: string
+  isSending: boolean
 };
 
 export default class SignIn extends Component<Props, State> {
@@ -27,30 +27,49 @@ export default class SignIn extends Component<Props, State> {
 
     this.state = {
       email: "",
-      password: ""
+      isSending: false
     };
   }
 
-  onLogin = async () => {
-    try {
-      const user = await firebase
-        .auth()
-        .signInAndRetrieveDataWithEmailAndPassword(
-          this.state.email,
-          this.state.password
-        );
+  asyncState = state => {
+    return new Promise(resolve => {
+      this.setState(state, resolve);
+    });
+  };
 
-      this.props.navigation.replace("Home");
+  onLogin = async () => {
+    const { email } = this.state;
+
+    try {
+      await this.asyncState({ isSending: true });
+
+      await firebase.auth().sendSignInLinkToEmail(email, {
+        url: "https://jupiter-9b937.firebaseapp.com",
+        iOS: {
+          bundleId: "com.taxischoferes"
+        },
+        android: {
+          packageName: "com.taxischoferes",
+          installApp: true,
+          minimumVersion: "1"
+        },
+        handleCodeInApp: true
+      });
+
+      await AsyncStorage.setItem("emailForSignIn", email);
+
+      await this.asyncState({ isSending: false });
+
+      this.props.navigation.replace("SignUp");
     } catch (error) {
       console.warn(error.message);
     }
   };
 
-  onSignUp = () => {
-    this.props.navigation.push("SignUp");
-  };
-
   render() {
+    const { isSending, email } = this.state;
+    const emailIsEmpty = email.length === 0;
+
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <View style={{ width: "60%" }}>
@@ -59,17 +78,17 @@ export default class SignIn extends Component<Props, State> {
             onChangeText={email => this.setState({ email })}
             style={{ height: 40 }}
             placeholder="example@mail.com"
+            editable={!isSending}
+            keyboardType="email-address"
           />
 
-          <Text>Password</Text>
-          <TextInput
-            onChangeText={password => this.setState({ password })}
-            style={{ height: 40, marginBottom: 40 }}
+          <Button
+            disabled={emailIsEmpty}
+            onPress={this.onLogin}
+            title="Iniciar sesión"
           />
 
-          <Button onPress={this.onLogin} title="Iniciar sesión" />
-
-          <Button onPress={this.onSignUp} title="Crear Cuenta" />
+          {isSending && <Text>Enviando</Text>}
         </View>
       </View>
     );
