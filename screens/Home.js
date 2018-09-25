@@ -70,6 +70,8 @@ export default class Home extends Component<Props, State> {
         <View
           style={{
             alignItems: "center",
+            borderBottomWidth: 1,
+            borderColor: "#eaeaea",
             flexDirection: "row",
             justifyContent: "space-between",
             paddingBottom: 8,
