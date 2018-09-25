@@ -16,14 +16,15 @@ export default class Splash extends Component<Props> {
     header: null
   };
 
-  asyncState = state => {
+  asyncState = (state: any) => {
     return new Promise(resolve => {
       this.setState(state, resolve);
     });
   };
 
   async componentDidMount() {
-    const link = await firebase.links().getInitialLink();
+    const link = (await firebase.links().getInitialLink()) || "";
+
     if (link !== null && firebase.auth().isSignInWithEmailLink(link)) {
       try {
         const email = await AsyncStorage.getItem("emailForSignIn");
@@ -33,6 +34,7 @@ export default class Splash extends Component<Props> {
         console.warn(error);
       }
     }
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.props.navigation.replace("Home");

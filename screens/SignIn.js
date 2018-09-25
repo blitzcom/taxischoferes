@@ -42,7 +42,7 @@ export default class SignIn extends Component<Props, State> {
     };
   }
 
-  asyncState = state => {
+  asyncState = (state: any) => {
     return new Promise(resolve => {
       this.setState(state, resolve);
     });
