@@ -6,8 +6,8 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
 import type { NavigationScreenProps } from "react-navigation";
-import { View, Button, Text, Switch, Title } from "@shoutem/ui";
-import MapView from "react-native-maps";
+import { View, Button, Text, Switch, Title, Spinner } from "@shoutem/ui";
+import MapView, { Marker } from "react-native-maps";
 
 type Props = {
   navigation: NavigationScreenProps<*>
@@ -15,6 +15,8 @@ type Props = {
 
 type State = {
   available: boolean,
+  latitude: number,
+  longitude: number,
   passenger: boolean
 };
 
@@ -28,8 +30,26 @@ export default class Home extends Component<Props, State> {
 
     this.state = {
       available: false,
-      passenger: false
+      passenger: false,
+      latitude: null,
+      longitude: null
     };
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position =>
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }),
+      error => console.warn(error),
+      {
+        enableHighAccuracy: true,
+        timeout: 20000,
+        maximumAge: 1000
+      }
+    );
   }
 
   onSignOut = async () => {
@@ -42,6 +62,9 @@ export default class Home extends Component<Props, State> {
   };
 
   render() {
+    const { latitude, longitude } = this.state;
+    const hasPosition = latitude !== null && longitude !== null;
+
     return (
       <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
         <View
@@ -62,28 +85,34 @@ export default class Home extends Component<Props, State> {
           />
         </View>
 
-        <View style={{ flex: 1 }}>
-          <MapView
-            style={{ height: "100%" }}
-            region={{
-              latitude: 37.78825,
-              latitudeDelta: 0.015,
-              longitude: -122.4324,
-              longitudeDelta: 0.0121
-            }}
-          />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          {hasPosition ? (
+            <MapView
+              style={{ height: "100%" }}
+              region={{
+                latitude: latitude,
+                latitudeDelta: 0.003,
+                longitude: longitude,
+                longitudeDelta: 0.003
+              }}
+            >
+              <Marker coordinate={{ latitude, longitude }} />
+            </MapView>
+          ) : (
+            <Spinner />
+          )}
         </View>
 
         {this.state.passenger && (
           <View
             style={{
+              alignItems: "center",
               backgroundColor: "white",
               height: "100%",
-              position: "absolute",
-              alignItems: "center",
-              width: "100%",
               paddingLeft: 12,
-              paddingRight: 12
+              paddingRight: 12,
+              position: "absolute",
+              width: "100%"
             }}
           >
             <Title style={{ paddingTop: 32, paddingBottom: 300 }}>
