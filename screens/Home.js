@@ -6,8 +6,7 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
 import type { NavigationScreenProps } from "react-navigation";
-import { View } from "react-native";
-import { Button, Text, Switch } from "@shoutem/ui";
+import { View, Button, Text, Switch, Title } from "@shoutem/ui";
 import MapView from "react-native-maps";
 
 type Props = {
@@ -15,7 +14,8 @@ type Props = {
 };
 
 type State = {
-  available: false
+  available: boolean,
+  passenger: boolean
 };
 
 export default class Home extends Component<Props, State> {
@@ -27,7 +27,8 @@ export default class Home extends Component<Props, State> {
     super(props);
 
     this.state = {
-      available: false
+      available: false,
+      passenger: false
     };
   }
 
@@ -42,7 +43,7 @@ export default class Home extends Component<Props, State> {
 
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "white" }}>
+      <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
         <View
           style={{
             alignItems: "center",
@@ -72,6 +73,39 @@ export default class Home extends Component<Props, State> {
             }}
           />
         </View>
+
+        {this.state.passenger && (
+          <View
+            style={{
+              backgroundColor: "white",
+              height: "100%",
+              position: "absolute",
+              alignItems: "center",
+              width: "100%",
+              paddingLeft: 12,
+              paddingRight: 12
+            }}
+          >
+            <Title style={{ paddingTop: 32, paddingBottom: 300 }}>
+              NUEVO PASAJERO
+            </Title>
+
+            <Text style={{ marginBottom: 32 }}>#PASSENGER_ADDRESS</Text>
+
+            <View styleName="horizontal">
+              <Button styleName="secondary confirmation">
+                <Text>Aceptar</Text>
+              </Button>
+
+              <Button
+                styleName="confirmation"
+                style={{ borderColor: "#eaeaea" }}
+              >
+                <Text>Rechazar</Text>
+              </Button>
+            </View>
+          </View>
+        )}
       </View>
     );
   }
