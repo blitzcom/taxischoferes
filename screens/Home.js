@@ -6,7 +6,15 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
 import type { NavigationScreenProps } from "react-navigation";
-import { View, Button, Text, Switch, Title, Spinner } from "@shoutem/ui";
+import {
+  View,
+  Button,
+  Text,
+  Switch,
+  Title,
+  Spinner,
+  ImageBackground
+} from "@shoutem/ui";
 import MapView, { Marker } from "react-native-maps";
 
 type Props = {
@@ -105,36 +113,43 @@ export default class Home extends Component<Props, State> {
           )}
         </View>
 
-        {this.state.passenger && (
+        {this.state.available && (
           <View
             style={{
               alignItems: "center",
-              backgroundColor: "white",
               height: "100%",
-              paddingLeft: 12,
-              paddingRight: 12,
               position: "absolute",
-              width: "100%"
+              width: "100%",
             }}
           >
-            <Title style={{ paddingTop: 32, paddingBottom: 300 }}>
-              NUEVO PASAJERO
-            </Title>
-
-            <Text style={{ marginBottom: 32 }}>#PASSENGER_ADDRESS</Text>
-
-            <View styleName="horizontal">
-              <Button styleName="secondary confirmation">
-                <Text>Aceptar</Text>
-              </Button>
-
-              <Button
-                styleName="confirmation"
-                style={{ borderColor: "#eaeaea" }}
+            <ImageBackground
+              style={{ flex: 1 }}
+              source={require("../assets/notification_background.png")}
+            >
+              <Title
+                styleName="secondary"
+                style={{ paddingTop: 32, paddingBottom: 330, color: "#eaeaea" }}
               >
-                <Text>Rechazar</Text>
-              </Button>
-            </View>
+                NUEVO PASAJERO
+              </Title>
+
+              <Text style={{ marginBottom: 32, color: "#eaeaea" }}>
+                #PASSENGER_ADDRESS
+              </Text>
+
+              <View styleName="horizontal">
+                <Button styleName="confirmation">
+                  <Text>ACEPTAR</Text>
+                </Button>
+
+                <Button
+                  styleName="confirmation secondary"
+                  onPress={() => this.setState({ available: false })}
+                >
+                  <Text>RECHAZAR</Text>
+                </Button>
+              </View>
+            </ImageBackground>
           </View>
         )}
       </View>
