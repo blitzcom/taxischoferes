@@ -9,7 +9,11 @@ import { View, Button, Text, Title, ImageBackground } from "@shoutem/ui";
 
 import Map from "../components/Map";
 
-export default class Home extends Component {
+type Props = {
+  navigation: any
+}
+
+export default class Home extends Component<Props> {
   static navigationOptions = {
     header: null
   };

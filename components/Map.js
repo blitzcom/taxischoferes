@@ -4,15 +4,7 @@
  */
 
 import React, { Component, Fragment } from "react";
-import {
-  View,
-  Button,
-  Text,
-  Switch,
-  Title,
-  Spinner,
-  ImageBackground
-} from "@shoutem/ui";
+import { View, Text, Switch, Spinner } from "@shoutem/ui";
 import MapView, { Marker } from "react-native-maps";
 
 export default class Map extends Component {

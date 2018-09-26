@@ -6,13 +6,11 @@
 import { AsyncStorage } from "react-native";
 import firebase from "react-native-firebase";
 import React, { Component, Fragment } from "react";
-import type { NavigationScreenProps } from "react-navigation";
 import {
   View,
   Caption,
   Text,
   Title,
-  Subtitle,
   Button,
   TextInput,
   FormGroup,
@@ -20,7 +18,7 @@ import {
 } from "@shoutem/ui";
 
 type Props = {
-  navigation: NavigationScreenProps<*>
+  navigation: any
 };
 
 type State = {

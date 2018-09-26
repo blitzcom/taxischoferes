@@ -7,7 +7,7 @@ import React, { Component } from "react";
 import firebase from "react-native-firebase";
 import type { NavigationScreenProp } from "react-navigation";
 import { AsyncStorage } from "react-native";
-import { View, Text, Title, Spinner, Caption } from "@shoutem/ui";
+import { View, Title, Spinner, Caption } from "@shoutem/ui";
 
 type Props = { navigation: NavigationScreenProp<*> };
 
@@ -28,7 +28,7 @@ export default class Splash extends Component<Props> {
     if (link !== null && firebase.auth().isSignInWithEmailLink(link)) {
       try {
         const email = await AsyncStorage.getItem("emailForSignIn");
-        const result = await firebase.auth().signInWithEmailLink(email, link);
+        await firebase.auth().signInWithEmailLink(email, link);
         return this.props.navigation.replace("Home");
       } catch (error) {
         console.warn(error);

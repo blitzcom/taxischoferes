@@ -4,12 +4,10 @@
  */
 
 import React, { Component } from "react";
-import firebase from "react-native-firebase";
-import type { NavigationScreenProps } from "react-navigation";
 import { Title, View, Button, Text, Caption } from "@shoutem/ui";
 
 type Props = {
-  navigation: NavigationScreenProps<*>
+  navigation: any
 };
 
 export default class SignUp extends Component<Props> {
