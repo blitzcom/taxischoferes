@@ -14,13 +14,15 @@ import SignIn from "./screens/SignIn";
 import SignUp from "./screens/SignUp";
 import Splash from "./screens/Splash";
 import Taxi from "./screens/Taxi";
+import VehicleForm from "./screens/forms/Vehicle";
 
 const Router = createStackNavigator({
   Splash: Splash,
   SignIn: SignIn,
   SignUp: SignUp,
   Home: Home,
-  Taxi: Taxi
+  Taxi: Taxi,
+  VehicleForm: VehicleForm
 });
 
 type Props = {};

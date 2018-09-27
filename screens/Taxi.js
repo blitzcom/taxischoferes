@@ -1,15 +1,58 @@
 import React, { Component } from "react";
-import { View, Text } from "@shoutem/ui";
+import { TouchableNativeFeedback } from "react-native";
+import { NavigationBar, Text, View, Icon, Row } from "@shoutem/ui";
 
-export default class Taxi extends Component {
+type Props = {
+  navigation: any
+};
+
+export default class Taxi extends Component<Props> {
   static navigationOptions = {
     header: null
   };
 
+  onPressVehicle = () => {
+    this.props.navigation.push("VehicleForm");
+  };
+
+  onPressInsurance = () => {};
+
+  onPressLicense = () => {};
+
+  onPressPermission = () => {};
+
   render() {
     return (
       <View>
-        <Text>Taxi information form</Text>
+        <NavigationBar title="INFORMACIÓN" styleName="inline" />
+
+        <TouchableNativeFeedback onPress={this.onPressVehicle}>
+          <Row>
+            <Text>Vehículo</Text>
+            <Icon styleName="disclosure" name="right-arrow" />
+          </Row>
+        </TouchableNativeFeedback>
+
+        <TouchableNativeFeedback onPress={this.onPressInsurance}>
+          <Row>
+            <Text>Seguro</Text>
+            <Icon styleName="disclosure" name="right-arrow" />
+          </Row>
+        </TouchableNativeFeedback>
+
+        <TouchableNativeFeedback onPress={this.onPressLicense}>
+          <Row>
+            <Text>Licencia</Text>
+            <Icon styleName="disclosure" name="right-arrow" />
+          </Row>
+        </TouchableNativeFeedback>
+
+        <TouchableNativeFeedback onPress={this.onPressPermission}>
+          <Row>
+            <Text>Permiso</Text>
+            <Icon styleName="disclosure" name="right-arrow" />
+          </Row>
+        </TouchableNativeFeedback>
       </View>
     );
   }
