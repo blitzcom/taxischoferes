@@ -5,13 +5,14 @@
 
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
-import { View, Button, Text, Title, ImageBackground } from "@shoutem/ui";
+import { View } from "@shoutem/ui";
 
 import Map from "../components/Map";
+import TripNotification from "../components/TripNofication";
 
 type Props = {
   navigation: any
-}
+};
 
 export default class Home extends Component<Props> {
   static navigationOptions = {
@@ -22,8 +23,11 @@ export default class Home extends Component<Props> {
     super(props);
 
     this.state = {
-      passenger: false,
+      hasTrip: false,
+      trip: null
     };
+
+    this.onNewTrip = this.onNewTrip.bind(this);
   }
 
   onSignOut = async () => {
@@ -35,52 +39,17 @@ export default class Home extends Component<Props> {
     }
   };
 
+  onNewTrip(trip) {
+    this.setState({ hasTrip: true, trip });
+  }
+
   render() {
-    const { passenger } = this.state;
+    const { hasTrip, trip } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
-        <Map />
-
-        {passenger && (
-          <View
-            style={{
-              alignItems: "center",
-              height: "100%",
-              position: "absolute",
-              width: "100%"
-            }}
-          >
-            <ImageBackground
-              style={{ flex: 1 }}
-              source={require("../assets/notification_background.png")}
-            >
-              <Title
-                styleName="secondary"
-                style={{ paddingTop: 32, paddingBottom: 330, color: "#eaeaea" }}
-              >
-                NUEVO PASAJERO
-              </Title>
-
-              <Text style={{ marginBottom: 32, color: "#eaeaea" }}>
-                #PASSENGER_ADDRESS
-              </Text>
-
-              <View styleName="horizontal">
-                <Button styleName="confirmation">
-                  <Text>ACEPTAR</Text>
-                </Button>
-
-                <Button
-                  styleName="confirmation secondary"
-                  onPress={() => this.setState({ available: false })}
-                >
-                  <Text>RECHAZAR</Text>
-                </Button>
-              </View>
-            </ImageBackground>
-          </View>
-        )}
+        <Map onNewTrip={this.onNewTrip} />
+        {hasTrip && <TripNotification trip={trip} />}
       </View>
     );
   }
