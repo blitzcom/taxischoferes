@@ -33,7 +33,7 @@ export default class Vehicle extends Component<Props> {
     const { isLoading } = this.state;
 
     return (
-      <View>
+      <View styleName="fill-parent">
         <NavigationBar
           hasHistory
           navigateBack={this.onGoBack}
@@ -42,7 +42,7 @@ export default class Vehicle extends Component<Props> {
         />
 
         {isLoading ? (
-          <View>
+          <View style={{ flex: 1, justifyContent: "center" }}>
             <Spinner />
           </View>
         ) : (
