@@ -16,6 +16,12 @@ export default class Splash extends Component<Props> {
     header: null
   };
 
+  constructor(props) {
+    super(props);
+
+    this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
+  }
+
   asyncState = (state: any) => {
     return new Promise(resolve => {
       this.setState(state, resolve);
@@ -35,11 +41,26 @@ export default class Splash extends Component<Props> {
       }
     }
 
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
+  }
+
+  async onAuthStateChanged(user) {
       if (user) {
-        this.props.navigation.replace("Home");
-        return;
+      const userRef = firebase.database().ref(`drivers/${user.uid}`);
+
+      await userRef.set({
+        displayName: user.displayName,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        isAnonymous: false,
+        photoURL: user.photoURL,
+        providerId: user.providerId,
+        uid: user.uid
+      });
+
+      return this.props.navigation.replace("Home");
       }
+
       this.props.navigation.replace("SignIn");
     });
   }
