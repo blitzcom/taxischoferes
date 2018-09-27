@@ -8,6 +8,8 @@ import { View, Text, Switch, Spinner } from "@shoutem/ui";
 import MapView, { Marker } from "react-native-maps";
 import firebase from "react-native-firebase";
 
+import { googleMapsStyle } from "../maps";
+
 type Props = {
   onNewTrip: (data: any) => void
 };
@@ -17,10 +19,15 @@ export default class Map extends Component<Props> {
     super(props);
 
     this.state = {
-      isAvailable: false,
       isAvailabilityChanging: false,
-      latitude: null,
-      longitude: null
+      isAvailable: false,
+      hasRegion: false,
+      region: {
+        latitude: null,
+        latitudeDelta: 0.004,
+        longitude: null,
+        longitudeDelta: 0.004
+      }
     };
 
     this.onAvailableChange = this.onAvailableChange.bind(this);
@@ -38,8 +45,11 @@ export default class Map extends Component<Props> {
     navigator.geolocation.getCurrentPosition(
       position =>
         this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
+          hasRegion: true,
+          region: Object.assign({}, this.state.region, {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          })
         }),
       error => console.warn(error),
       {
@@ -88,12 +98,11 @@ export default class Map extends Component<Props> {
 
   render() {
     const {
-      latitude,
-      longitude,
+      region,
       isAvailable,
-      isAvailabilityChanging
+      isAvailabilityChanging,
+      hasRegion
     } = this.state;
-    const hasPosition = latitude !== null && longitude !== null;
 
     return (
       <Fragment>
@@ -125,17 +134,16 @@ export default class Map extends Component<Props> {
         </View>
 
         <View style={{ flex: 1, justifyContent: "center" }}>
-          {hasPosition ? (
+          {hasRegion ? (
             <MapView
+              customMapStyle={googleMapsStyle}
               style={{ height: "100%" }}
-              region={{
-                latitude: latitude,
-                latitudeDelta: 0.003,
-                longitude: longitude,
-                longitudeDelta: 0.003
-              }}
+              showsPointsOfInterest={false}
+              showsTraffic={false}
+              showsIndoors={false}
+              region={region}
             >
-              <Marker coordinate={{ latitude, longitude }} />
+              <Marker tracksViewChanges={false} coordinate={region} />
             </MapView>
           ) : (
             <Spinner />
