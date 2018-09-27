@@ -13,12 +13,14 @@ import Home from "./screens/Home";
 import SignIn from "./screens/SignIn";
 import SignUp from "./screens/SignUp";
 import Splash from "./screens/Splash";
+import Taxi from "./screens/Taxi";
 
 const Router = createStackNavigator({
   Splash: Splash,
   SignIn: SignIn,
   SignUp: SignUp,
-  Home: Home
+  Home: Home,
+  Taxi: Taxi
 });
 
 type Props = {};
