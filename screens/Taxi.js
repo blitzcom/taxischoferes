@@ -25,28 +25,47 @@ export default class Taxi extends Component<Props> {
   }
 
   async componentDidMount() {
+    this.navigationSubscription = this.props.navigation.addListener(
+      "didFocus",
+      this.onDidFocus
+    );
+
     this.docsRef = firebase
       .database()
       .ref(`docs/${firebase.auth().currentUser.uid}`);
 
-    const snap = await this.docsRef.once("value");
+    await this.fetchDocs();
+  }
 
-    const docs = Object.assign(
-      {},
-      {
+  componentWillUnmount() {
+    this.navigationSubscription.remove();
+  }
+
+  onDidFocus = async () => {
+    await this.fetchDocs();
+  };
+
+  fetchDocs = async () => {
+    const snap = await this.docsRef.once("value");
+    const docs = snap.val() || {};
+
+    const nextState = {
         insurance: null,
+      isValid: this.isValid(docs),
         license: null,
         permission: null,
         vehicle: null,
-        isValid: false
-      },
-      snap.val()
-    );
+      ...docs
+    };
 
-    docs.isValid = this.isValid(docs);
+    await this.syncSetState(nextState);
+  };
 
-    this.setState(docs);
-  }
+  syncSetState = nextState => {
+    return new Promise(resolve => {
+      this.setState(nextState, resolve);
+    });
+  };
 
   isValid = state => {
     const { insurance, license, permission, vehicle } = state;
