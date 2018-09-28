@@ -53,12 +53,12 @@ export default class Taxi extends Component<Props> {
     const docs = snap.val() || {};
 
     const nextState = {
-        insurance: null,
+      insurance: null,
       isLoading: false,
       isValid: this.isValid(docs),
-        license: null,
-        permission: null,
-        vehicle: null,
+      license: null,
+      permission: null,
+      vehicle: null,
       ...docs
     };
 
@@ -77,19 +77,19 @@ export default class Taxi extends Component<Props> {
   };
 
   onPressVehicle = () => {
-    this.props.navigation.push("VehicleForm");
+    this.state.isLoading || this.props.navigation.push("VehicleForm");
   };
 
   onPressInsurance = () => {
-    this.props.navigation.push("InsuranceForm");
+    this.state.isLoading || this.props.navigation.push("InsuranceForm");
   };
 
   onPressLicense = () => {
-    this.props.navigation.push("LicenseForm");
+    this.state.isLoading || this.props.navigation.push("LicenseForm");
   };
 
   onPressPermission = () => {
-    this.props.navigation.push("PermissionForm");
+    this.state.isLoading || this.props.navigation.push("PermissionForm");
   };
 
   onGoBack = () => {
