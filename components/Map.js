@@ -7,6 +7,7 @@ import React, { Component, Fragment } from "react";
 import { View, Text, Switch, Spinner } from "@shoutem/ui";
 import MapView, { Marker } from "react-native-maps";
 import firebase from "react-native-firebase";
+import { Alert } from "react-native";
 
 import { googleMapsStyle } from "../maps";
 
@@ -42,6 +43,16 @@ export default class Map extends Component<Props> {
       .equalTo("pending")
       .limitToFirst(1);
 
+    this.loadCurrentPosition();
+  }
+
+  componentWillUnmount() {
+    if (this.tripsRef) {
+      this.tripsRef.off("child_added", this.onNewTrip);
+    }
+  }
+
+  loadCurrentPosition = () => {
     navigator.geolocation.getCurrentPosition(
       position =>
         this.setState({
@@ -51,20 +62,22 @@ export default class Map extends Component<Props> {
             longitude: position.coords.longitude
           })
         }),
-      error => console.warn(error),
+      this.alertMissingGPS,
       {
         enableHighAccuracy: true,
         timeout: 20000,
         maximumAge: 1000
       }
     );
-  }
+  };
 
-  componentWillUnmount() {
-    if (this.tripsRef) {
-      this.tripsRef.off("child_added", this.onNewTrip);
-    }
-  }
+  alertMissingGPS = () => {
+    Alert.alert(
+      "Hay un problema con el GPS",
+      "Verifica que el GPS de tu dispositivo se encuentra encendido y funciona correctamente.",
+      [{ text: "REINTENTAR", onPress: this.loadCurrentPosition }]
+    );
+  };
 
   syncSetState = nextState => {
     return new Promise(resolve => {
