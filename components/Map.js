@@ -52,30 +52,44 @@ export default class Map extends Component<Props> {
     }
   }
 
-  loadCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(
-      position =>
-        this.setState({
-          hasRegion: true,
-          region: Object.assign({}, this.state.region, {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
-          })
-        }),
-      this.alertMissingGPS,
-      {
+  syncSetState = nextState => {
+    return new Promise(resolve => {
+      this.setState(nextState, resolve);
+    });
+  };
+
+  getCurrentPosition = (options = {}) => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  };
+
+  loadCurrentPosition = async () => {
+    try {
+      const position = await this.getCurrentPosition({
         enableHighAccuracy: true,
-        timeout: 20000,
+        timeout: 25000,
         maximumAge: 1000
-      }
-    );
+      });
+
+      await this.syncSetState({
+        hasRegion: true,
+        region: Object.assign({}, this.state.region, {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        })
+      });
+    } catch (error) {
+      this.alertMissingGPS();
+    }
   };
 
   alertMissingGPS = () => {
     Alert.alert(
       "Hay un problema con el GPS",
       "Verifica que el GPS de tu dispositivo se encuentra encendido y funciona correctamente.",
-      [{ text: "REINTENTAR", onPress: this.loadCurrentPosition }]
+      [{ text: "REINTENTAR", onPress: this.loadCurrentPosition }],
+      { cancelable: false }
     );
   };
 
