@@ -15,7 +15,9 @@ export default class Taxi extends Component<Props> {
     this.props.navigation.push("VehicleForm");
   };
 
-  onPressInsurance = () => {};
+  onPressInsurance = () => {
+    this.props.navigation.push("InsuranceForm");
+  };
 
   onPressLicense = () => {
     this.props.navigation.push("LicenseForm");
