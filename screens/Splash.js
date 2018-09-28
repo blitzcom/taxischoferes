@@ -47,7 +47,7 @@ export default class Splash extends Component<Props> {
   async onAuthStateChanged(user) {
     if (user) {
       const userRef = firebase.database().ref(`drivers/${user.uid}`);
-      const taxiRef = firebase.database().ref(`taxis/${user.uid}`);
+      const docsRef = firebase.database().ref(`docs/${user.uid}`);
 
       await userRef.set({
         displayName: user.displayName,
@@ -59,9 +59,10 @@ export default class Splash extends Component<Props> {
         uid: user.uid
       });
 
-      const taxi = await taxiRef.once("value");
+      const docsSnap = await docsRef.once("value");
+      const docs = docsSnap.val();
 
-      if (taxi.val() === null) {
+      if (docs === null) {
         return this.props.navigation.replace("Taxi");
       }
 
