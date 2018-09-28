@@ -1,15 +1,13 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+import firebase from "react-native-firebase";
 import {
-  View,
+  Caption,
+  FormGroup,
   NavigationBar,
   Spinner,
-  Button,
-  Text,
   TextInput,
-  FormGroup,
-  Caption
+  View
 } from "@shoutem/ui";
-import firebase from "react-native-firebase";
 
 type Props = {
   navigation: any
@@ -28,7 +26,6 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         this.state = {
           data: null,
           edit: edit,
-          hasChanged: false,
           hasContent: false,
           isLoading: true,
           isSaving: false,
@@ -45,7 +42,6 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         const data = dataSnap.val();
 
         const nextState = {
-          hasChanged: false,
           hasContent: true,
           isLoading: false,
           data: data
@@ -53,7 +49,6 @@ const withForm = (title, path, edit = {}, labels = {}) => {
 
         if (data === null) {
           nextState.hasContent = false;
-          nextState.hasChanged = true;
         } else {
           nextState.edit = Object.assign({}, data);
         }
@@ -101,7 +96,6 @@ const withForm = (title, path, edit = {}, labels = {}) => {
 
       validateChange = async () => {
         await this.syncSetState({
-          hasChanged: this.hasEditChanged(),
           isValid: this.isEditDataValid()
         });
       };
@@ -114,10 +108,17 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         this.validateChange();
       };
 
-      onSave = async () => {
+      delay = () => {
+        return new Promise(resolve => {
+          setTimeout(resolve, 250);
+        });
+      };
+
+      save = async () => {
         try {
           await this.syncSetState({ isSaving: true });
           await this.dataRef.set(this.state.edit);
+          await this.delay();
           await this.syncSetState({
             data: { ...this.state.data, ...this.state.edit },
             hasChanged: false,
@@ -128,7 +129,11 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         }
       };
 
-      onGoBack = () => {
+      onGoBack = async () => {
+        if (this.hasEditChanged() && this.isEditDataValid()) {
+          await this.save();
+        }
+
         this.props.navigation.goBack();
       };
 
@@ -165,8 +170,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
       };
 
       render() {
-        const { isLoading, isSaving, hasChanged } = this.state;
-        const isEditing = !isSaving;
+        const { isLoading, isSaving } = this.state;
 
         return (
           <View styleName="fill-parent">
@@ -176,15 +180,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
               styleName="inline"
               title={title}
               rightComponent={
-                <Fragment>
-                  {isSaving && <Spinner style={{ marginRight: 14 }} />}
-                  {hasChanged &&
-                    isEditing && (
-                      <Button onPress={this.onSave}>
-                        <Text>Listo</Text>
-                      </Button>
-                    )}
-                </Fragment>
+                isSaving && <Spinner style={{ marginRight: 14 }} />
               }
             />
 
