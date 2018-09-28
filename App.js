@@ -15,6 +15,7 @@ import SignUp from "./screens/SignUp";
 import Splash from "./screens/Splash";
 import Taxi from "./screens/Taxi";
 import VehicleForm from "./screens/forms/Vehicle";
+import LicenseForm from "./screens/forms/License";
 
 const Router = createStackNavigator({
   Splash: Splash,
@@ -22,7 +23,8 @@ const Router = createStackNavigator({
   SignUp: SignUp,
   Home: Home,
   Taxi: Taxi,
-  VehicleForm: VehicleForm
+  VehicleForm: VehicleForm,
+  LicenseForm: LicenseForm
 });
 
 type Props = {};

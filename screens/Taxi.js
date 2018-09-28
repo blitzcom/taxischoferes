@@ -17,7 +17,9 @@ export default class Taxi extends Component<Props> {
 
   onPressInsurance = () => {};
 
-  onPressLicense = () => {};
+  onPressLicense = () => {
+    this.props.navigation.push("LicenseForm");
+  };
 
   onPressPermission = () => {};
 
