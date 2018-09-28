@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
 import { TouchableNativeFeedback } from "react-native";
-import { NavigationBar, Text, View, Icon, Row } from "@shoutem/ui";
+import { NavigationBar, Text, View, Icon, Row, Spinner } from "@shoutem/ui";
 
 type Props = {
   navigation: any
@@ -16,6 +16,7 @@ export default class Taxi extends Component<Props> {
     super(props);
 
     this.state = {
+      isLoading: true,
       isValid: false,
       insurance: null,
       license: null,
@@ -46,11 +47,14 @@ export default class Taxi extends Component<Props> {
   };
 
   fetchDocs = async () => {
+    await this.syncSetState({ isLoading: true });
+
     const snap = await this.docsRef.once("value");
     const docs = snap.val() || {};
 
     const nextState = {
         insurance: null,
+      isLoading: false,
       isValid: this.isValid(docs),
         license: null,
         permission: null,
@@ -93,7 +97,14 @@ export default class Taxi extends Component<Props> {
   };
 
   render() {
-    const { license, permission, insurance, vehicle, isValid } = this.state;
+    const {
+      insurance,
+      isLoading,
+      isValid,
+      license,
+      permission,
+      vehicle
+    } = this.state;
 
     return (
       <View>
@@ -102,6 +113,7 @@ export default class Taxi extends Component<Props> {
           navigateBack={this.onGoBack}
           title="INFORMACIÓN"
           styleName="inline"
+          rightComponent={isLoading && <Spinner style={{ marginRight: 14 }} />}
         />
 
         <TouchableNativeFeedback onPress={this.onPressVehicle}>
