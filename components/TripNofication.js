@@ -4,7 +4,15 @@
  */
 
 import React, { Component } from "react";
-import { View, Button, Text, Title, ImageBackground } from "@shoutem/ui";
+import firebase from "react-native-firebase";
+import {
+  View,
+  Button,
+  Text,
+  Title,
+  ImageBackground,
+  Spinner
+} from "@shoutem/ui";
 
 type Props = {
   onAccept: () => void,
@@ -13,8 +21,59 @@ type Props = {
 };
 
 export default class TripNotification extends Component<Props> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      state: "pending",
+      isLoading: true
+    };
+  }
+
+  componentDidMount() {
+    const uid = firebase.auth().currentUser.uid;
+
+    this.tripRef = firebase
+      .database()
+      .ref(`tripsByDrivers/${uid}/${this.props.tripId}`);
+
+    this.tripSubscription = this.tripRef.on("value", this.onChangeValue);
+  }
+
+  onChangeValue = snap => {
+    this.setState(
+      Object.assign({}, this.state, snap.val(), { isLoading: false })
+    );
+  };
+
+  componentWillUnmount() {
+    this.tripRef.off("value", this.tripSubscription);
+  }
+
+  componentDidUpdate() {
+    if (this.state.state === "cancel") {
+      this.props.onDismiss();
+    }
+  }
+
   render() {
-    const { trip } = this.props;
+    const { isLoading } = this.state;
+
+    if (isLoading) {
+      return (
+        <View
+          style={{
+            alignItems: "center",
+            height: "100%",
+            position: "absolute",
+            width: "100%",
+            backgroundColor: "black"
+          }}
+        >
+          <Spinner />
+        </View>
+      );
+    }
 
     return (
       <View
@@ -36,9 +95,7 @@ export default class TripNotification extends Component<Props> {
             NUEVO PASAJERO
           </Title>
 
-          <Text style={{ color: "#eaeaea", paddingBottom: 280 }}>
-            {trip.passenger.name}
-          </Text>
+          <Text style={{ color: "#eaeaea", paddingBottom: 280 }} />
 
           <Text style={{ marginBottom: 32, color: "#eaeaea" }}>
             #PASSENGER_ADDRESS
@@ -65,5 +122,6 @@ export default class TripNotification extends Component<Props> {
 TripNotification.defaultProps = {
   onAccept: () => {},
   onReject: () => {},
-  trip: null
+  trip: null,
+  onDismiss: () => {}
 };

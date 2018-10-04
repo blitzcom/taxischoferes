@@ -24,7 +24,7 @@ export default class Home extends Component<Props> {
 
     this.state = {
       hasTrip: false,
-      trip: null
+      tripId: null
     };
 
     this.onNewTrip = this.onNewTrip.bind(this);
@@ -40,16 +40,22 @@ export default class Home extends Component<Props> {
   };
 
   onNewTrip(trip) {
-    this.setState({ hasTrip: true, trip });
+    this.setState({ hasTrip: true, tripId: trip });
   }
 
+  onDismiss = () => {
+    this.setState({ hasTrip: false, tripId: null });
+  };
+
   render() {
-    const { hasTrip, trip } = this.state;
+    const { hasTrip, tripId } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
         <Map onNewTrip={this.onNewTrip} />
-        {hasTrip && <TripNotification trip={trip} />}
+        {hasTrip && (
+          <TripNotification tripId={tripId} onDismiss={this.onDismiss} />
+        )}
       </View>
     );
   }

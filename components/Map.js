@@ -100,7 +100,7 @@ export default class Map extends Component<Props> {
   };
 
   onNewTrip(data) {
-    this.props.onNewTrip(data.val());
+    this.props.onNewTrip(data.key)
   }
 
   makeAvailable() {
