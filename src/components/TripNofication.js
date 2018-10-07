@@ -86,7 +86,7 @@ export default class TripNotification extends Component<Props> {
       >
         <ImageBackground
           style={{ flex: 1 }}
-          source={require("../assets/notification_background.png")}
+          source={require("../../assets/notification_background.png")}
         >
           <Title
             styleName="secondary"
