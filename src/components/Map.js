@@ -9,7 +9,7 @@ import MapView, { Marker } from "react-native-maps";
 import firebase from "react-native-firebase";
 import { Alert } from "react-native";
 
-import { googleMapsStyle } from "../maps";
+import { googleMapsStyle } from "../../maps";
 
 type Props = {
   onNewTrip: (data: any) => void
