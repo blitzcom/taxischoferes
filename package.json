@@ -12,6 +12,7 @@
     "react": "16.5.0",
     "react-native": "0.57.0",
     "react-native-firebase": "^5.0.0-rc4",
+    "react-native-google-signin": "^1.0.0-rc6",
     "react-native-maps": "^0.21.0",
     "react-navigation": "^2.16.0"
   },
