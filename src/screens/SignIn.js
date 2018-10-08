@@ -7,6 +7,7 @@ import React, { Component, Fragment } from "react";
 import { StyleSheet } from 'react-native';
 import { View, Caption, Text, Title, FormGroup, Spinner } from "@shoutem/ui";
 import { GoogleSignin, GoogleSigninButton } from "react-native-google-signin";
+
 GoogleSignin.configure();
 
 type Props = {

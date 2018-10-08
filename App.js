@@ -11,7 +11,6 @@ import React, { Component } from "react";
 
 import Home from "./src/screens/Home";
 import SignIn from "./src/screens/SignIn";
-import SignUp from "./src/screens/SignUp";
 import Splash from "./src/screens/Splash";
 import Taxi from "./src/screens/Taxi";
 import VehicleForm from "./src/screens/forms/Vehicle";
@@ -22,7 +21,6 @@ import InsuranceForm from "./src/screens/forms/Insurance";
 const Router = createStackNavigator({
   Splash: Splash,
   SignIn: SignIn,
-  SignUp: SignUp,
   Home: Home,
   Taxi: Taxi,
   VehicleForm: VehicleForm,
