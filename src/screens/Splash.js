@@ -29,15 +29,19 @@ export default class Splash extends Component<Props> {
   };
 
   async componentDidMount() {
-    const link = (await firebase.links().getInitialLink()) || "";
 
-    if (link !== null && firebase.auth().isSignInWithEmailLink(link)) {
+    const data = await AsyncStorage.getItem("userData");
+
+    if(data !== null) {
       try {
-        const email = await AsyncStorage.getItem("emailForSignIn");
-        await firebase.auth().signInWithEmailLink(email, link);
+        const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+    
+
+        await firebase.auth().signInWithCredential(credential);
         return this.props.navigation.replace("Home");
       } catch (error) {
         console.warn(error);
+        
       }
     }
 

@@ -11,18 +11,15 @@ import {
   Caption,
   Text,
   Title,
-  Button,
-  TextInput,
-  FormGroup,
-  Spinner
+  FormGroup
 } from "@shoutem/ui";
+import { GoogleSignin, GoogleSigninButton } from 'react-native-google-signin';
 
 type Props = {
   navigation: any
 };
 
 type State = {
-  email: string,
   isSending: boolean
 };
 
@@ -35,9 +32,10 @@ export default class SignIn extends Component<Props, State> {
     super(props);
 
     this.state = {
-      email: "",
       isSending: false
     };
+
+    this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
   }
 
   asyncState = (state: any) => {
@@ -46,38 +44,57 @@ export default class SignIn extends Component<Props, State> {
     });
   };
 
-  onLogin = async () => {
-    const { email } = this.state;
-
+  googleLogin = async () => {
     try {
       await this.asyncState({ isSending: true });
+      await GoogleSignin.configure();
+      const data = await GoogleSignin.signIn();
 
-      await firebase.auth().sendSignInLinkToEmail(email, {
-        url: "https://jupiter-9b937.firebaseapp.com",
-        iOS: {
-          bundleId: "com.taxischoferes"
-        },
-        android: {
-          packageName: "com.taxischoferes",
-          installApp: true,
-          minimumVersion: "1"
-        },
-        handleCodeInApp: true
+      const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+
+      await firebase.auth().signInWithCredential(credential);
+
+      await AsyncStorage.setItem("userData", data);
+      await this.asyncState({ isSending: false });
+      
+
+    } catch (error) {
+      console.warn(error);
+    }
+
+    firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
+  }
+
+  async onAuthStateChanged(user) {
+    if (user) {
+      const userRef = firebase.database().ref(`drivers/${user.uid}`);
+      const docsRef = firebase.database().ref(`docs/${user.uid}`);
+
+      await userRef.set({
+        displayName: user.displayName,
+        email: user.email,
+        emailVerified: user.emailVerified,
+        isAnonymous: false,
+        photoURL: user.photoURL,
+        providerId: user.providerId,
+        uid: user.uid
       });
 
-      await AsyncStorage.setItem("emailForSignIn", email);
+      const docsSnap = await docsRef.once("value");
+      const docs = docsSnap.val();
 
-      await this.asyncState({ isSending: false });
+      if (docs === null) {
+        return this.props.navigation.replace("Taxi");
+      }
 
-      this.props.navigation.replace("SignUp");
-    } catch (error) {
-      console.warn(error.message);
+      return this.props.navigation.replace("Home");
     }
-  };
+
+    this.props.navigation.replace("SignIn");
+  }
 
   render() {
-    const { isSending, email } = this.state;
-    const emailIsEmpty = email.length === 0;
+    const { isSending } = this.state;
 
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -90,30 +107,23 @@ export default class SignIn extends Component<Props, State> {
             Conductores
           </Caption>
 
-          {isSending ? (
-            <Spinner />
-          ) : (
-            <Fragment>
+          <Fragment>
               <Text styleName="h-center" style={{ marginBottom: 18 }}>
-                Accede a tu cuenta. Si aún no tienes, se creará automáticamente.
+                Accede con tu cuenta de google.
               </Text>
 
               <FormGroup>
-                <Caption>EMAIL</Caption>
-                <TextInput
-                  onChangeText={email => this.setState({ email })}
-                  placeholder="example@mail.com"
-                  editable={!isSending}
-                  keyboardType="email-address"
-                  style={{ marginBottom: 45 }}
+                <GoogleSigninButton
+                  style={{ width: 280, height: 48 }}
+                  size={GoogleSigninButton.Size.Icon}
+                  color={GoogleSigninButton.Color.Dark}
+                  onPress={this.googleLogin}
+                  disabled={isSending}
                 />
               </FormGroup>
 
-              <Button disabled={emailIsEmpty} onPress={this.onLogin}>
-                <Text>Iniciar sesión</Text>
-              </Button>
             </Fragment>
-          )}
+          
         </View>
       </View>
     );
