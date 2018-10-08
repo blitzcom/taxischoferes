@@ -115,7 +115,7 @@ export default class SignIn extends Component<Props, State> {
               <FormGroup>
                 <GoogleSigninButton
                   style={{ width: 280, height: 48 }}
-                  size={GoogleSigninButton.Size.Icon}
+                  size={GoogleSigninButton.Size.Standard}
                   color={GoogleSigninButton.Color.Dark}
                   onPress={this.googleLogin}
                   disabled={isSending}
