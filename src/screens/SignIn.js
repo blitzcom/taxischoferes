@@ -4,7 +4,8 @@
  */
 import firebase from "react-native-firebase";
 import React, { Component, Fragment } from "react";
-import { View, Caption, Text, Title, FormGroup } from "@shoutem/ui";
+import { StyleSheet } from 'react-native';
+import { View, Caption, Text, Title, FormGroup, Spinner } from "@shoutem/ui";
 import { GoogleSignin, GoogleSigninButton } from "react-native-google-signin";
 GoogleSignin.configure();
 
@@ -82,33 +83,65 @@ export default class SignIn extends Component<Props, State> {
     const { isSending } = this.state;
 
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <View style={{ width: "80%" }}>
-          <Title styleName="h-center" style={{ marginBottom: 2 }}>
+      <View style={ styles.main }>
+        <View style={ styles.container }>
+          <Title styleName="h-center" style={ styles.title }>
             ¡HEY! TAXI
           </Title>
 
-          <Caption styleName="h-center" style={{ marginBottom: 40 }}>
+          <Caption styleName="h-center" style={ styles.caption }>
             Conductores
           </Caption>
 
           <Fragment>
-            <Text styleName="h-center" style={{ marginBottom: 18 }}>
+            <Text styleName="h-center" style={ styles.text }>
               Accede con tu cuenta de google.
             </Text>
 
-            <FormGroup>
-              <GoogleSigninButton
-                style={{ width: 280, height: 48 }}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Light}
-                onPress={this.signIn}
-                disabled={isSending}
-              />
-            </FormGroup>
+            {
+              isSending
+                ? <Spinner />
+                : <FormGroup style = { styles.group }>
+                    <GoogleSigninButton
+                      style={ styles.googleButton }
+                      size={GoogleSigninButton.Size.Wide}
+                      color={GoogleSigninButton.Color.Light}
+                      onPress={this.signIn}
+                      disabled={isSending}
+                    />
+                  </FormGroup>
+            }
           </Fragment>
         </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  container: {
+    width: "80%"
+  },
+  title: {
+    marginBottom: 2
+  },
+  caption: {
+    marginBottom: 40
+  },
+  text: {
+    marginBottom: 18
+  },
+  group: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  googleButton: {
+    width: 280,
+    height: 48
+  }
+});
