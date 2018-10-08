@@ -2,27 +2,19 @@
  * @format
  * @flow
  */
-
-import { AsyncStorage } from "react-native";
 import firebase from "react-native-firebase";
 import React, { Component, Fragment } from "react";
-import {
-  View,
-  Caption,
-  Text,
-  Title,
-  Button,
-  TextInput,
-  FormGroup,
-  Spinner
-} from "@shoutem/ui";
+import { StyleSheet } from 'react-native';
+import { View, Caption, Text, Title, FormGroup, Spinner } from "@shoutem/ui";
+import { GoogleSignin, GoogleSigninButton } from "react-native-google-signin";
+
+GoogleSignin.configure();
 
 type Props = {
   navigation: any
 };
 
 type State = {
-  email: string,
   isSending: boolean
 };
 
@@ -35,7 +27,6 @@ export default class SignIn extends Component<Props, State> {
     super(props);
 
     this.state = {
-      email: "",
       isSending: false
     };
   }
@@ -46,76 +37,112 @@ export default class SignIn extends Component<Props, State> {
     });
   };
 
-  onLogin = async () => {
-    const { email } = this.state;
-
+  signIn = async () => {
     try {
       await this.asyncState({ isSending: true });
+      const data = await GoogleSignin.signIn();
 
-      await firebase.auth().sendSignInLinkToEmail(email, {
-        url: "https://jupiter-9b937.firebaseapp.com",
-        iOS: {
-          bundleId: "com.taxischoferes"
-        },
-        android: {
-          packageName: "com.taxischoferes",
-          installApp: true,
-          minimumVersion: "1"
-        },
-        handleCodeInApp: true
-      });
+      const credential = firebase.auth.GoogleAuthProvider.credential(
+        data.idToken,
+        data.accessToken
+      );
 
-      await AsyncStorage.setItem("emailForSignIn", email);
+      const { user } = await firebase.auth().signInWithCredential(credential);
 
-      await this.asyncState({ isSending: false });
-
-      this.props.navigation.replace("SignUp");
+      await this.saveUserAndRedirect(user);
     } catch (error) {
-      console.warn(error.message);
+      console.warn(error);
+      this.props.navigation.replace("SignIn");
     }
   };
 
+  saveUserAndRedirect = async user => {
+    const userRef = firebase.database().ref(`drivers/${user.uid}`);
+    const docsRef = firebase.database().ref(`docs/${user.uid}`);
+
+    await userRef.set({
+      displayName: user.displayName,
+      email: user.email,
+      emailVerified: user.emailVerified,
+      isAnonymous: false,
+      photoURL: user.photoURL,
+      providerId: user.providerId,
+      uid: user.uid
+    });
+
+    const docsSnap = await docsRef.once("value");
+    const docs = docsSnap.val();
+
+    if (docs === null) {
+      return this.props.navigation.replace("Taxi");
+    }
+
+    return this.props.navigation.replace("Home");
+  };
+
   render() {
-    const { isSending, email } = this.state;
-    const emailIsEmpty = email.length === 0;
+    const { isSending } = this.state;
 
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <View style={{ width: "80%" }}>
-          <Title styleName="h-center" style={{ marginBottom: 2 }}>
+      <View style={ styles.main }>
+        <View style={ styles.container }>
+          <Title styleName="h-center" style={ styles.title }>
             ¡HEY! TAXI
           </Title>
 
-          <Caption styleName="h-center" style={{ marginBottom: 40 }}>
+          <Caption styleName="h-center" style={ styles.caption }>
             Conductores
           </Caption>
 
-          {isSending ? (
-            <Spinner />
-          ) : (
-            <Fragment>
-              <Text styleName="h-center" style={{ marginBottom: 18 }}>
-                Accede a tu cuenta. Si aún no tienes, se creará automáticamente.
-              </Text>
+          <Fragment>
+            <Text styleName="h-center" style={ styles.text }>
+              Accede con tu cuenta de google.
+            </Text>
 
-              <FormGroup>
-                <Caption>EMAIL</Caption>
-                <TextInput
-                  onChangeText={email => this.setState({ email })}
-                  placeholder="example@mail.com"
-                  editable={!isSending}
-                  keyboardType="email-address"
-                  style={{ marginBottom: 45 }}
-                />
-              </FormGroup>
-
-              <Button disabled={emailIsEmpty} onPress={this.onLogin}>
-                <Text>Iniciar sesión</Text>
-              </Button>
-            </Fragment>
-          )}
+            {
+              isSending
+                ? <Spinner />
+                : <FormGroup style = { styles.group }>
+                    <GoogleSigninButton
+                      style={ styles.googleButton }
+                      size={GoogleSigninButton.Size.Wide}
+                      color={GoogleSigninButton.Color.Light}
+                      onPress={this.signIn}
+                      disabled={isSending}
+                    />
+                  </FormGroup>
+            }
+          </Fragment>
         </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  container: {
+    width: "80%"
+  },
+  title: {
+    marginBottom: 2
+  },
+  caption: {
+    marginBottom: 40
+  },
+  text: {
+    marginBottom: 18
+  },
+  group: {
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  googleButton: {
+    width: 280,
+    height: 48
+  }
+});
