@@ -29,22 +29,6 @@ export default class Splash extends Component<Props> {
   };
 
   async componentDidMount() {
-
-    const data = await AsyncStorage.getItem("userData");
-
-    if(data !== null) {
-      try {
-        const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
-    
-
-        await firebase.auth().signInWithCredential(credential);
-        return this.props.navigation.replace("Home");
-      } catch (error) {
-        console.warn(error);
-        
-      }
-    }
-
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
   }
 
