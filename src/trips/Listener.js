@@ -10,7 +10,7 @@ type Props = {
 
 class Listener extends Component<Props> {
   changeState = () => {
-    this.props.changeState('new');
+    this.props.changeState({ currentState: 'new' });
   };
 
   render() {
