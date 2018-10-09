@@ -11,28 +11,29 @@ const createStateMachine = (initialState, states) => {
       };
 
       componentDidMount() {
-        const { path } = this.props;
+        const { write, read } = this.props;
 
-        if (path === null) {
+        if (write === null || read === null) {
           return;
         }
 
-        this.nodeRef = firebase.database().ref(path);
-        this.subscription = this.nodeRef.on('value', this.remoteChangeState);
+        this.writeNodeRef = firebase.database().ref(write);
+        this.readNodeRef = firebase.database().ref(read);
+        this.subscription = this.readNodeRef.on('value', this.listenState);
       }
 
       componentWillUnmount() {
-        if (this.nodeRef) {
-          this.nodeRef.off('value', this.subscription);
+        if (this.readNodeRef) {
+          this.readNodeRef.off('value', this.subscription);
         }
       }
 
-      remoteChangeState = (snapshot) => {
+      listenState = (snapshot) => {
         this.setState(snapshot.val());
       };
 
       onChangeState = (nextState) => {
-        this.nodeRef.update(nextState);
+        this.writeNodeRef.update(nextState);
       };
 
       renderMachine = () => {

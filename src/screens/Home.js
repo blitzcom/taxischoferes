@@ -25,6 +25,7 @@ export default class Home extends Component<Props> {
       tripId: null,
       origin: null,
       destiny: null,
+      uid: firebase.auth().currentUser.uid,
     };
 
     this.onNewTrip = this.onNewTrip.bind(this);
@@ -48,13 +49,17 @@ export default class Home extends Component<Props> {
   };
 
   render() {
-    const { tripId, origin, destiny } = this.state;
+    const { tripId, origin, destiny, uid } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white', position: 'relative' }}>
         <Map onNewTrip={this.onNewTrip} origin={origin} destiny={destiny} />
         {tripId && (
-          <Machine path={`trips/${tripId}`} dismiss={this.onDismiss} />
+          <Machine
+            dismiss={this.onDismiss}
+            read={`tripsByDrivers/${uid}/${tripId}`}
+            write={`trips/${tripId}`}
+          />
         )}
       </View>
     );
