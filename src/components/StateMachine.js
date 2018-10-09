@@ -4,7 +4,7 @@ import firebase from 'react-native-firebase';
 import { View } from '@shoutem/ui';
 
 const createStateMachine = (initialState, states) => {
-  return () => {
+  return (WrappedComponent) => {
     class StateMachine extends Component {
       state = {
         state: null,
@@ -55,14 +55,18 @@ const createStateMachine = (initialState, states) => {
           return null;
         }
 
-        const { override } = states[state];
+        const { override, step } = states[state];
 
         if (override) {
           return this.renderMachine();
         }
 
         return (
-          <View style={styles.machineWrapper}>{this.renderMachine()}</View>
+          <View style={styles.machineWrapper}>
+            <WrappedComponent step={step}>
+              {this.renderMachine()}
+            </WrappedComponent>
+          </View>
         );
       }
     }
