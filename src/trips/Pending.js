@@ -19,7 +19,7 @@ class Pending extends Component<Props> {
   };
 
   onCancel = () => {
-    this.props.changeState({ state: 'cancel' });
+    this.props.changeState({ state: 'cancel' }, true);
   };
 
   render() {

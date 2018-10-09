@@ -32,8 +32,12 @@ const createStateMachine = (initialState, states) => {
         this.setState(snapshot.val());
       };
 
-      onChangeState = (nextState) => {
-        this.writeNodeRef.update(nextState);
+      onChangeState = (nextState, writeOnReader = false) => {
+        if (writeOnReader) {
+          return this.readNodeRef.update(nextState);
+        }
+
+        return this.writeNodeRef.update(nextState);
       };
 
       renderMachine = () => {
