@@ -10,6 +10,7 @@ import Boarded from './Boarded';
 import Cancel from './Cancel';
 import Finalized from './Finalized';
 import Pending from './Pending';
+import Taked from './Taked';
 import Traveling from './Traveling';
 
 type Props = {
@@ -57,6 +58,9 @@ const states = {
   pending: {
     component: Pending,
     override: true,
+  },
+  taked: {
+    component: Taked,
   },
   traveling: {
     component: Traveling,
