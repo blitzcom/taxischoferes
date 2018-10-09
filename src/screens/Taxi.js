@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 import { TouchableNativeFeedback } from "react-native";
 import { NavigationBar, Text, View, Icon, Row, Spinner } from "@shoutem/ui";
 
@@ -172,6 +172,5 @@ export default class Taxi extends Component<Props> {
 const styles = StyleSheet.create({
   spinner: {
     marginRight: 14
-  },
-
+  }
 });

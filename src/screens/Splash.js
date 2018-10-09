@@ -64,7 +64,7 @@ export default class Splash extends Component<Props> {
     return (
       <View style={styles.main }>
         <View style={styles.container}>
-          <Title styleName="h-center" style={styles.container}>
+          <Title styleName="h-center" style={styles.logo}>
             ¡HEY! TAXI
           </Title>
 
