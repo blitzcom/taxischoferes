@@ -5,21 +5,21 @@ type Props = {
   changeState: () => void,
 };
 
-class Accepted extends Component<Props> {
+class Arrived extends Component<Props> {
   changeState = () => {
-    this.props.changeState({ state: 'arrived' });
+    this.props.changeState({ state: 'boarded' });
   };
 
   render() {
     return (
       <View>
-        <Text>Accepted state</Text>
+        <Text>Arrived state</Text>
         <Button onPress={this.changeState} styleName="secondary">
-          <Text>LLEGADO AL LUGAR</Text>
+          <Text>PASAJERO A BORDO</Text>
         </Button>
       </View>
     );
   }
 }
 
-export default Accepted;
+export default Arrived;

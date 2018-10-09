@@ -1,13 +1,21 @@
 import createStateMachine from '../components/StateMachine';
 
-import Cancel from './Cancel';
-import Pending from './Pending';
 import Accepted from './Accepted';
+import Arrived from './Arrived';
+import Boarded from './Boarded';
+import Cancel from './Cancel';
+import Finalized from './Finalized';
+import Pending from './Pending';
+import Traveling from './Traveling';
 
 const states = {
-  cancel: Cancel,
-  pending: Pending,
   accepted: Accepted,
+  arrived: Arrived,
+  boarded: Boarded,
+  cancel: Cancel,
+  finalized: Finalized,
+  pending: Pending,
+  traveling: Traveling,
 };
 
 const Machine = createStateMachine('listener', states)();
