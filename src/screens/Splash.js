@@ -5,6 +5,7 @@
 
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
+import { StyleSheet } from 'react-native';
 import type { NavigationScreenProp } from "react-navigation";
 import { View, Title, Spinner, Caption } from "@shoutem/ui";
 
@@ -61,13 +62,13 @@ export default class Splash extends Component<Props> {
 
   render() {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <View style={{ width: "80%" }}>
-          <Title styleName="h-center" style={{ marginBottom: 2 }}>
+      <View style={styles.main }>
+        <View style={styles.container}>
+          <Title styleName="h-center" style={styles.container}>
             ¡HEY! TAXI
           </Title>
 
-          <Caption styleName="h-center" style={{ marginBottom: 40 }}>
+          <Caption styleName="h-center" style={ styles.caption}>
             Conductores
           </Caption>
 
@@ -77,3 +78,20 @@ export default class Splash extends Component<Props> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  main:{
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  container:{
+    width: "80%"
+  },
+  logo:{
+    marginBottom: 2
+  },
+  caption:{
+    marginBottom: 40
+  }
+});

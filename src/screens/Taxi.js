@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
+import { StyleSheet } from 'react-native';
 import { TouchableNativeFeedback } from "react-native";
 import { NavigationBar, Text, View, Icon, Row, Spinner } from "@shoutem/ui";
 
@@ -113,7 +114,7 @@ export default class Taxi extends Component<Props> {
           navigateBack={this.onGoBack}
           title="INFORMACIÓN"
           styleName="inline"
-          rightComponent={isLoading && <Spinner style={{ marginRight: 14 }} />}
+          rightComponent={isLoading && <Spinner style={styles.spinner} />}
         />
 
         <TouchableNativeFeedback onPress={this.onPressVehicle}>
@@ -167,3 +168,10 @@ export default class Taxi extends Component<Props> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  spinner: {
+    marginRight: 14
+  },
+
+});
