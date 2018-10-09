@@ -3,17 +3,17 @@
  * @flow
  */
 
-import React, { Component } from "react";
-import firebase from "react-native-firebase";
+import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
 import { StyleSheet } from 'react-native';
-import type { NavigationScreenProp } from "react-navigation";
-import { View, Title, Spinner, Caption } from "@shoutem/ui";
+import type { NavigationScreenProp } from 'react-navigation';
+import { View, Title, Spinner, Caption } from '@shoutem/ui';
 
 type Props = { navigation: NavigationScreenProp<*> };
 
 export default class Splash extends Component<Props> {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   constructor(props) {
@@ -23,7 +23,7 @@ export default class Splash extends Component<Props> {
   }
 
   asyncState = (state: any) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(state, resolve);
     });
   };
@@ -44,31 +44,31 @@ export default class Splash extends Component<Props> {
         isAnonymous: false,
         photoURL: user.photoURL,
         providerId: user.providerId,
-        uid: user.uid
+        uid: user.uid,
       });
 
-      const docsSnap = await docsRef.once("value");
+      const docsSnap = await docsRef.once('value');
       const docs = docsSnap.val();
 
       if (docs === null) {
-        return this.props.navigation.replace("Taxi");
+        return this.props.navigation.replace('Taxi');
       }
 
-      return this.props.navigation.replace("Home");
+      return this.props.navigation.replace('Home');
     }
 
-    this.props.navigation.replace("SignIn");
+    this.props.navigation.replace('SignIn');
   }
 
   render() {
     return (
-      <View style={styles.main }>
+      <View style={styles.main}>
         <View style={styles.container}>
           <Title styleName="h-center" style={styles.logo}>
             ¡HEY! TAXI
           </Title>
 
-          <Caption styleName="h-center" style={ styles.caption}>
+          <Caption styleName="h-center" style={styles.caption}>
             Conductores
           </Caption>
 
@@ -80,18 +80,18 @@ export default class Splash extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  main:{
+  main: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  container:{
-    width: "80%"
+  container: {
+    width: '80%',
   },
-  logo:{
-    marginBottom: 2
+  logo: {
+    marginBottom: 2,
   },
-  caption:{
-    marginBottom: 40
-  }
+  caption: {
+    marginBottom: 40,
+  },
 });

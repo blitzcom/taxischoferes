@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import firebase from "react-native-firebase";
-import { StyleSheet } from "react-native";
-import { TouchableNativeFeedback } from "react-native";
-import { NavigationBar, Text, View, Icon, Row, Spinner } from "@shoutem/ui";
+import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
+import { StyleSheet } from 'react-native';
+import { TouchableNativeFeedback } from 'react-native';
+import { NavigationBar, Text, View, Icon, Row, Spinner } from '@shoutem/ui';
 
 type Props = {
-  navigation: any
+  navigation: any,
 };
 
 export default class Taxi extends Component<Props> {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   constructor(props) {
@@ -22,13 +22,13 @@ export default class Taxi extends Component<Props> {
       insurance: null,
       license: null,
       permission: null,
-      vehicle: null
+      vehicle: null,
     };
   }
 
   async componentDidMount() {
     this.navigationSubscription = this.props.navigation.addListener(
-      "didFocus",
+      'didFocus',
       this.onDidFocus
     );
 
@@ -50,7 +50,7 @@ export default class Taxi extends Component<Props> {
   fetchDocs = async () => {
     await this.syncSetState({ isLoading: true });
 
-    const snap = await this.docsRef.once("value");
+    const snap = await this.docsRef.once('value');
     const docs = snap.val() || {};
 
     const nextState = {
@@ -60,41 +60,41 @@ export default class Taxi extends Component<Props> {
       license: null,
       permission: null,
       vehicle: null,
-      ...docs
+      ...docs,
     };
 
     await this.syncSetState(nextState);
   };
 
-  syncSetState = nextState => {
-    return new Promise(resolve => {
+  syncSetState = (nextState) => {
+    return new Promise((resolve) => {
       this.setState(nextState, resolve);
     });
   };
 
-  isValid = state => {
+  isValid = (state) => {
     const { insurance, license, permission, vehicle } = state;
     return insurance && license && permission && vehicle;
   };
 
   onPressVehicle = () => {
-    this.state.isLoading || this.props.navigation.push("VehicleForm");
+    this.state.isLoading || this.props.navigation.push('VehicleForm');
   };
 
   onPressInsurance = () => {
-    this.state.isLoading || this.props.navigation.push("InsuranceForm");
+    this.state.isLoading || this.props.navigation.push('InsuranceForm');
   };
 
   onPressLicense = () => {
-    this.state.isLoading || this.props.navigation.push("LicenseForm");
+    this.state.isLoading || this.props.navigation.push('LicenseForm');
   };
 
   onPressPermission = () => {
-    this.state.isLoading || this.props.navigation.push("PermissionForm");
+    this.state.isLoading || this.props.navigation.push('PermissionForm');
   };
 
   onGoBack = () => {
-    this.props.navigation.replace("Home");
+    this.props.navigation.replace('Home');
   };
 
   render() {
@@ -104,7 +104,7 @@ export default class Taxi extends Component<Props> {
       isValid,
       license,
       permission,
-      vehicle
+      vehicle,
     } = this.state;
 
     return (
@@ -171,6 +171,6 @@ export default class Taxi extends Component<Props> {
 
 const styles = StyleSheet.create({
   spinner: {
-    marginRight: 14
-  }
+    marginRight: 14,
+  },
 });
