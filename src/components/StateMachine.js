@@ -1,47 +1,52 @@
-// @flow
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
-
-export type ChangeStateFunc = (nextState: string, data?: Object) => void;
 
 const createStateMachine = (initialState, states) => {
   return () => {
     class StateMachine extends Component {
       state = {
-        currentState: null,
+        state: null,
       };
 
       componentDidMount() {
-        this.machineRef = firebase.database().ref(`machine`);
-        this.subscription = this.machineRef.on('value', this.remoteChangeState);
+        const { path } = this.props;
+
+        if (path === null) {
+          return;
+        }
+
+        this.nodeRef = firebase.database().ref(path);
+        this.subscription = this.nodeRef.on('value', this.remoteChangeState);
       }
 
       componentWillUnmount() {
-        this.machineRef.off('value', this.subscription);
+        if (this.nodeRef) {
+          this.nodeRef.off('value', this.subscription);
+        }
       }
 
       remoteChangeState = (snapshot) => {
         this.setState(snapshot.val());
       };
 
-      onChangeState: ChangeStateFunc = (nextState) => {
-        this.machineRef.update(nextState);
+      onChangeState = (nextState) => {
+        this.nodeRef.update(nextState);
       };
 
       render() {
-        const { currentState, data } = this.state;
+        const { state } = this.state;
 
-        if (currentState === null) {
+        if (state === null) {
           return null;
         }
 
-        const Machine = states[currentState];
+        const Machine = states[state];
 
         return (
           <Machine
+            {...this.props}
             changeState={this.onChangeState}
-            currentState={currentState}
-            data={data}
+            state={state}
           />
         );
       }

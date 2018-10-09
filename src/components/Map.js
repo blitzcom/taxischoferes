@@ -10,7 +10,6 @@ import firebase from 'react-native-firebase';
 import { Alert } from 'react-native';
 
 import { googleMapsStyle } from '../maps';
-import Machine from '../trips/Machine';
 
 type Props = {
   onNewTrip: (data: any) => void,
@@ -132,8 +131,6 @@ export default class Map extends Component<Props> {
       hasRegion,
     } = this.state;
 
-    const { origin, destiny } = this.props;
-
     return (
       <Fragment>
         <View
@@ -164,7 +161,20 @@ export default class Map extends Component<Props> {
         </View>
 
         <View style={{ flex: 1, justifyContent: 'center' }}>
-          {hasRegion ? <Machine /> : <Spinner />}
+          {hasRegion ? (
+            <MapView
+              customMapStyle={googleMapsStyle}
+              style={{ height: '100%' }}
+              showsPointsOfInterest={false}
+              showsTraffic={false}
+              showsIndoors={false}
+              region={region}
+            >
+              <Marker tracksViewChanges={false} coordinate={region} />
+            </MapView>
+          ) : (
+            <Spinner />
+          )}
         </View>
       </Fragment>
     );

@@ -1,11 +1,13 @@
 import createStateMachine from '../components/StateMachine';
 
-import Listener from './Listener';
-import New from './New';
+import Cancel from './Cancel';
+import Pending from './Pending';
+import Accepted from './Accepted';
 
 const states = {
-  listener: Listener,
-  new: New,
+  cancel: Cancel,
+  pending: Pending,
+  accepted: Accepted,
 };
 
 const Machine = createStateMachine('listener', states)();
