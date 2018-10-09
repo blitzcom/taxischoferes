@@ -3,16 +3,17 @@
  * @flow
  */
 
-import React, { Component, Fragment } from "react";
-import { View, Text, Switch, Spinner } from "@shoutem/ui";
-import MapView, { Marker } from "react-native-maps";
-import firebase from "react-native-firebase";
-import { Alert } from "react-native";
+import React, { Component, Fragment } from 'react';
+import { View, Text, Switch, Spinner } from '@shoutem/ui';
+import MapView, { Marker } from 'react-native-maps';
+import firebase from 'react-native-firebase';
+import { Alert } from 'react-native';
 
-import { googleMapsStyle } from "../maps";
+import { googleMapsStyle } from '../maps';
+import Machine from '../trips/Machine';
 
 type Props = {
-  onNewTrip: (data: any) => void
+  onNewTrip: (data: any) => void,
 };
 
 export default class Map extends Component<Props> {
@@ -27,8 +28,8 @@ export default class Map extends Component<Props> {
         latitude: null,
         latitudeDelta: 0.004,
         longitude: null,
-        longitudeDelta: 0.004
-      }
+        longitudeDelta: 0.004,
+      },
     };
 
     this.onAvailableChange = this.onAvailableChange.bind(this);
@@ -39,8 +40,8 @@ export default class Map extends Component<Props> {
     this.tripsRef = firebase
       .database()
       .ref(`tripsByDrivers/${firebase.auth().currentUser.uid}`)
-      .orderByChild("state")
-      .equalTo("pending")
+      .orderByChild('state')
+      .equalTo('pending')
       .limitToFirst(1);
 
     this.loadCurrentPosition();
@@ -48,12 +49,12 @@ export default class Map extends Component<Props> {
 
   componentWillUnmount() {
     if (this.tripsRef) {
-      this.tripsRef.off("child_added", this.onNewTrip);
+      this.tripsRef.off('child_added', this.onNewTrip);
     }
   }
 
-  syncSetState = nextState => {
-    return new Promise(resolve => {
+  syncSetState = (nextState) => {
+    return new Promise((resolve) => {
       this.setState(nextState, resolve);
     });
   };
@@ -69,15 +70,15 @@ export default class Map extends Component<Props> {
       const position = await this.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 25000,
-        maximumAge: 1000
+        maximumAge: 1000,
       });
 
       await this.syncSetState({
         hasRegion: true,
         region: Object.assign({}, this.state.region, {
           latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        })
+          longitude: position.coords.longitude,
+        }),
       });
     } catch (error) {
       this.alertMissingGPS();
@@ -86,29 +87,29 @@ export default class Map extends Component<Props> {
 
   alertMissingGPS = () => {
     Alert.alert(
-      "Hay un problema con el GPS",
-      "Verifica que el GPS de tu dispositivo se encuentra encendido y funciona correctamente.",
-      [{ text: "REINTENTAR", onPress: this.loadCurrentPosition }],
+      'Hay un problema con el GPS',
+      'Verifica que el GPS de tu dispositivo se encuentra encendido y funciona correctamente.',
+      [{ text: 'REINTENTAR', onPress: this.loadCurrentPosition }],
       { cancelable: false }
     );
   };
 
-  syncSetState = nextState => {
-    return new Promise(resolve => {
+  syncSetState = (nextState) => {
+    return new Promise((resolve) => {
       this.setState(nextState, resolve);
     });
   };
 
   onNewTrip(data) {
-    this.props.onNewTrip(data.key)
+    this.props.onNewTrip(data.key);
   }
 
   makeAvailable() {
-    this.tripsRef.on("child_added", this.onNewTrip);
+    this.tripsRef.on('child_added', this.onNewTrip);
   }
 
   makeUnavailable() {
-    this.tripsRef.off("child_added", this.onNewTrip);
+    this.tripsRef.off('child_added', this.onNewTrip);
   }
 
   async onAvailableChange(isAvailable) {
@@ -128,7 +129,7 @@ export default class Map extends Component<Props> {
       region,
       isAvailable,
       isAvailabilityChanging,
-      hasRegion
+      hasRegion,
     } = this.state;
 
     const { origin, destiny } = this.props;
@@ -137,15 +138,15 @@ export default class Map extends Component<Props> {
       <Fragment>
         <View
           style={{
-            alignItems: "center",
+            alignItems: 'center',
             borderBottomWidth: 1,
-            borderColor: "#eaeaea",
-            flexDirection: "row",
-            justifyContent: "space-between",
+            borderColor: '#eaeaea',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             paddingBottom: 8,
             paddingLeft: 12,
             paddingRight: 12,
-            paddingTop: 8
+            paddingTop: 8,
           }}
         >
           <Text styleName="bold">Disponible</Text>
@@ -162,31 +163,8 @@ export default class Map extends Component<Props> {
           </View>
         </View>
 
-        <View style={{ flex: 1, justifyContent: "center" }}>
-          {hasRegion ? (
-            <MapView
-              customMapStyle={googleMapsStyle}
-              style={{ height: "100%" }}
-              showsPointsOfInterest={false}
-              showsTraffic={false}
-              showsIndoors={false}
-              region={region}
-            >
-              {
-                (origin !== null) && (destiny !== null)
-                ? (
-                  <View>
-                    <Marker tracksViewChanges={false} coordinate={origin.position} title="origen" />
-                    <Marker tracksViewChanges={false} coordinate={destiny.position} title="destino" pinColor="gold"/>
-                  </View>
-                 )
-                : <Marker tracksViewChanges={false} coordinate={region} />
-                  
-              }
-            </MapView>
-          ) : (
-            <Spinner />
-          )}
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          {hasRegion ? <Machine /> : <Spinner />}
         </View>
       </Fragment>
     );
@@ -194,5 +172,5 @@ export default class Map extends Component<Props> {
 }
 
 Map.defaultProps = {
-  onNewTrip: () => {}
+  onNewTrip: () => {},
 };
