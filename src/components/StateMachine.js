@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import firebase from 'react-native-firebase';
+import { View } from '@shoutem/ui';
 
 const createStateMachine = (initialState, states) => {
   return () => {
@@ -33,14 +35,9 @@ const createStateMachine = (initialState, states) => {
         this.nodeRef.update(nextState);
       };
 
-      render() {
+      renderMachine = () => {
         const { state } = this.state;
-
-        if (state === null) {
-          return null;
-        }
-
-        const Machine = states[state];
+        const { component: Machine } = states[state];
 
         return (
           <Machine
@@ -49,11 +46,47 @@ const createStateMachine = (initialState, states) => {
             state={state}
           />
         );
+      };
+
+      render() {
+        const { state } = this.state;
+
+        if (state === null) {
+          return null;
+        }
+
+        const { override } = states[state];
+
+        if (override) {
+          return this.renderMachine();
+        }
+
+        return (
+          <View style={styles.machineWrapper}>{this.renderMachine()}</View>
+        );
       }
     }
 
     return StateMachine;
   };
 };
+
+const styles = StyleSheet.create({
+  machineWrapper: {
+    backgroundColor: 'white',
+    bottom: 0,
+    left: 10,
+    paddingBottom: 15,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 15,
+    position: 'absolute',
+    right: 10,
+    borderColor: '#eaeaea',
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+  },
+});
 
 export default createStateMachine;

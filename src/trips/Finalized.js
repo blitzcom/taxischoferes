@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Text, View } from '@shoutem/ui';
+import { Button, Text } from '@shoutem/ui';
 
 type Props = {
   changeState: () => void,
@@ -12,12 +12,9 @@ class Finalized extends Component<Props> {
 
   render() {
     return (
-      <View>
-        <Text>Finalized state</Text>
-        <Button onPress={this.changeState} styleName="secondary">
-          <Text>CERRAR</Text>
-        </Button>
-      </View>
+      <Button onPress={this.changeState} styleName="secondary">
+        <Text>CERRAR</Text>
+      </Button>
     );
   }
 }
