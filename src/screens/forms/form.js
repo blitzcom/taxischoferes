@@ -1,23 +1,24 @@
-import React, { Component } from "react";
-import firebase from "react-native-firebase";
+import React, { Component } from 'react';
+import firebase from 'react-native-firebase';
+import { StyleSheet } from 'react-native';
 import {
   Caption,
   FormGroup,
   NavigationBar,
   Spinner,
   TextInput,
-  View
-} from "@shoutem/ui";
+  View,
+} from '@shoutem/ui';
 
 type Props = {
-  navigation: any
+  navigation: any,
 };
 
 const withForm = (title, path, edit = {}, labels = {}) => {
   return () => {
     class WithForm extends Component<Props> {
       static navigationOptions = {
-        header: null
+        header: null,
       };
 
       constructor(props) {
@@ -29,7 +30,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
           hasContent: false,
           isLoading: true,
           isSaving: false,
-          isValid: false
+          isValid: false,
         };
       }
 
@@ -38,13 +39,13 @@ const withForm = (title, path, edit = {}, labels = {}) => {
           .database()
           .ref(`docs/${firebase.auth().currentUser.uid}/${path}`);
 
-        const dataSnap = await this.dataRef.once("value");
+        const dataSnap = await this.dataRef.once('value');
         const data = dataSnap.val();
 
         const nextState = {
           hasContent: true,
           isLoading: false,
-          data: data
+          data: data,
         };
 
         if (data === null) {
@@ -96,20 +97,20 @@ const withForm = (title, path, edit = {}, labels = {}) => {
 
       validateChange = async () => {
         await this.syncSetState({
-          isValid: this.isEditDataValid()
+          isValid: this.isEditDataValid(),
         });
       };
 
       onChange = async (key, value) => {
         await this.syncSetState({
-          edit: Object.assign({}, this.state.edit, { [key]: value })
+          edit: Object.assign({}, this.state.edit, { [key]: value }),
         });
 
         this.validateChange();
       };
 
       delay = () => {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(resolve, 250);
         });
       };
@@ -122,7 +123,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
           await this.syncSetState({
             data: { ...this.state.data, ...this.state.edit },
             hasChanged: false,
-            isSaving: false
+            isSaving: false,
           });
         } catch (error) {
           console.warn(error.message);
@@ -137,8 +138,8 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         this.props.navigation.goBack();
       };
 
-      syncSetState = async nextState => {
-        return new Promise(resolve => {
+      syncSetState = async (nextState) => {
+        return new Promise((resolve) => {
           this.setState(nextState, resolve);
         });
       };
@@ -159,7 +160,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
                 <TextInput
                   editable={isEditing}
                   value={value}
-                  onChangeText={text => this.onChange(key, text)}
+                  onChangeText={(text) => this.onChange(key, text)}
                 />
               </FormGroup>
             );
@@ -180,12 +181,12 @@ const withForm = (title, path, edit = {}, labels = {}) => {
               styleName="inline"
               title={title}
               rightComponent={
-                isSaving && <Spinner style={{ marginRight: 14 }} />
+                isSaving && <Spinner style={styles.spinnerSaving} />
               }
             />
 
             {isLoading ? (
-              <View style={{ flex: 1, justifyContent: "center" }}>
+              <View style={styles.spinnerLoading}>
                 <Spinner />
               </View>
             ) : (
@@ -200,4 +201,13 @@ const withForm = (title, path, edit = {}, labels = {}) => {
   };
 };
 
+const styles = StyleSheet.create({
+  spinnerSaving: {
+    marginRight: 14,
+  },
+  spinnerLoading: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+});
 export default withForm;
