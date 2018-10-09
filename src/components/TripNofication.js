@@ -26,7 +26,7 @@ export default class TripNotification extends Component<Props> {
 
     this.state = {
       state: "pending",
-      isLoading: true
+      isLoading: true,
     };
   }
 
@@ -54,6 +54,10 @@ export default class TripNotification extends Component<Props> {
     if (this.state.state === "cancel") {
       this.props.onDismiss();
     }
+  }
+
+  onAccept = () => {
+    this.props.onAccept(this.props.tripId, this.state.origin, this.state.destiny);
   }
 
   render() {
@@ -102,7 +106,10 @@ export default class TripNotification extends Component<Props> {
           </Text>
 
           <View styleName="horizontal">
-            <Button styleName="confirmation">
+            <Button
+              styleName="confirmation"
+              onPress={this.onAccept}
+            >
               <Text>ACEPTAR</Text>
             </Button>
 

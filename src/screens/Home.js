@@ -9,6 +9,7 @@ import { View } from "@shoutem/ui";
 
 import Map from "../components/Map";
 import TripNotification from "../components/TripNofication";
+import AcceptedTrip from './AcceptedTrip';
 
 type Props = {
   navigation: any
@@ -24,7 +25,10 @@ export default class Home extends Component<Props> {
 
     this.state = {
       hasTrip: false,
-      tripId: null
+      tripId: null,
+      acceptedTrip: false,
+      origin: null,
+      destiny: null
     };
 
     this.onNewTrip = this.onNewTrip.bind(this);
@@ -47,14 +51,21 @@ export default class Home extends Component<Props> {
     this.setState({ hasTrip: false, tripId: null });
   };
 
+  onAccept = (tripId, origin, destiny) => {
+    this.setState({ hasTrip: false, tripId, acceptedTrip: true, origin, destiny })
+  }
+
   render() {
-    const { hasTrip, tripId } = this.state;
+    const { hasTrip, tripId, acceptedTrip, origin, destiny } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: "white", position: "relative" }}>
-        <Map onNewTrip={this.onNewTrip} />
+        <Map onNewTrip={this.onNewTrip} origin={origin} destiny={destiny}/>
         {hasTrip && (
-          <TripNotification tripId={tripId} onDismiss={this.onDismiss} />
+          <TripNotification tripId={tripId} onDismiss={this.onDismiss} onAccept={this.onAccept}/>
+        )}
+        {acceptedTrip && (
+          <AcceptedTrip tripId={tripId}/>
         )}
       </View>
     );

@@ -131,6 +131,8 @@ export default class Map extends Component<Props> {
       hasRegion
     } = this.state;
 
+    const { origin, destiny } = this.props;
+
     return (
       <Fragment>
         <View
@@ -170,7 +172,17 @@ export default class Map extends Component<Props> {
               showsIndoors={false}
               region={region}
             >
-              <Marker tracksViewChanges={false} coordinate={region} />
+              {
+                (origin !== null) && (destiny !== null)
+                ? (
+                  <View>
+                    <Marker tracksViewChanges={false} coordinate={origin.position} title="origen" />
+                    <Marker tracksViewChanges={false} coordinate={destiny.position} title="destino" pinColor="gold"/>
+                  </View>
+                 )
+                : <Marker tracksViewChanges={false} coordinate={region} />
+                  
+              }
             </MapView>
           ) : (
             <Spinner />
