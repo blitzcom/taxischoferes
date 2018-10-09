@@ -5683,6 +5683,13 @@ react-native-scroller@0.0.6:
   resolved "https://registry.yarnpkg.com/react-native-scroller/-/react-native-scroller-0.0.6.tgz#dea8c89bd1ca2d2445fbb6b3a90960df6c1767ff"
   integrity sha1-3qjIm9HKLSRF+7azqQlg32wXZ/8=
 
+react-native-step-indicator@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-step-indicator/-/react-native-step-indicator-0.0.9.tgz#939b78b43c131c048cf52493c4ed8a1bbc8ce034"
+  integrity sha512-oiHYIMNrSePamQHRE1rf+9NfrY7LorEOIzjI3ya5nfmpGW2pBxjbRDQgZboVPpi5hradLqadw5qVb/CAOGypmQ==
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-tab-view@^0.0.77:
   version "0.0.77"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
