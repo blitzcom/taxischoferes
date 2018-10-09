@@ -29,7 +29,7 @@ const createStateMachine = (initialState, states) => {
       }
 
       listenState = (snapshot) => {
-        this.setState(snapshot.val());
+        this.setState({ ...snapshot.val() });
       };
 
       onChangeState = (nextState, writeOnReader = false) => {
@@ -47,8 +47,8 @@ const createStateMachine = (initialState, states) => {
         return (
           <Machine
             {...this.props}
+            {...this.state}
             changeState={this.onChangeState}
-            state={state}
           />
         );
       };

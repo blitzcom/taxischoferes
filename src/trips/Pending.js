@@ -23,6 +23,8 @@ class Pending extends Component<Props> {
   };
 
   render() {
+    const { origin } = this.props;
+
     return (
       <View
         style={{
@@ -46,7 +48,7 @@ class Pending extends Component<Props> {
           <Text style={{ color: '#eaeaea', paddingBottom: 280 }} />
 
           <Text style={{ marginBottom: 32, color: '#eaeaea' }}>
-            #PASSENGER_ADDRESS
+            {origin.reference}
           </Text>
 
           <View styleName="horizontal">
