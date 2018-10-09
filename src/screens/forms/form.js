@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import firebase from "react-native-firebase";
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 import {
   Caption,
   FormGroup,
@@ -202,13 +202,12 @@ const withForm = (title, path, edit = {}, labels = {}) => {
 };
 
 const styles = StyleSheet.create({
-  spinnerSaving:{
+  spinnerSaving: {
     marginRight: 14
   },
-  spinnerLoading:{
+  spinnerLoading: {
     flex: 1,
     justifyContent: "center"
   }
 });
 export default withForm;
-
