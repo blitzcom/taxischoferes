@@ -1,13 +1,10 @@
-/**
- * @format
- * @flow
- */
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { View } from '@shoutem/ui';
 
 import Map from '../components/Map';
 import Machine from '../trips/Machine';
+import TripListener from '../components/TripListener';
 
 type Props = {
   navigation: any,
@@ -53,6 +50,7 @@ export default class Home extends Component<Props> {
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white', position: 'relative' }}>
+        <TripListener onNewTrip={this.onNewTrip} />
         <Map onNewTrip={this.onNewTrip} origin={origin} destiny={destiny} />
         {tripId && (
           <Machine
