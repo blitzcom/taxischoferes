@@ -5,6 +5,7 @@ import { View } from '@shoutem/ui';
 import Map from '../components/Map';
 import Machine from '../trips/Machine';
 import TripListener from '../components/TripListener';
+import LocationTracker from '../components/LocationTracker';
 
 type Props = {
   navigation: any,
@@ -51,6 +52,7 @@ export default class Home extends Component<Props> {
     return (
       <View style={{ flex: 1, backgroundColor: 'white', position: 'relative' }}>
         <TripListener onNewTrip={this.onNewTrip} />
+        <LocationTracker userId={uid} />
         <Map onNewTrip={this.onNewTrip} origin={origin} destiny={destiny} />
         {tripId && (
           <Machine
