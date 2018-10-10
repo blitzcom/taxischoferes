@@ -85,6 +85,7 @@ class TripListener extends Component<Props, State> {
 
     await this.sleep();
     await this.syncSetState({ isAvailabilityChanging: false });
+    await this.props.onChangeAvailability(isAvailable);
   };
 
   render() {
