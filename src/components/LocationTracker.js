@@ -1,10 +1,11 @@
 // @flow
-import React, { Component } from 'react';
+import { Component } from 'react';
 import firebase, { Reference } from 'react-native-firebase';
 import GeoFire from 'geofire';
 
 type Props = {
   userId: null | string,
+  onCoordsChanged: (location: Object) => void,
 };
 
 class LocationTracker extends Component<Props> {
@@ -33,7 +34,7 @@ class LocationTracker extends Component<Props> {
 
   startTracking = () => {
     const options = {
-      distanceFilter: 100,
+      distanceFilter: 25,
       enableHighAccuracy: true,
       maximumAge: 15000,
       timeout: 25000,
@@ -56,10 +57,10 @@ class LocationTracker extends Component<Props> {
   };
 
   onTracking = (position: Position) => {
-    this.geoRef.set(this.props.userId, [
-      position.coords.latitude,
-      position.coords.longitude,
-    ]);
+    const { latitude, longitude } = position.coords;
+
+    this.geoRef.set(this.props.userId, [latitude, longitude]);
+    this.props.onCoordsChanged({ latitude, longitude });
   };
 
   onError = (error: PositionError) => {
