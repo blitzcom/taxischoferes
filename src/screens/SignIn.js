@@ -2,37 +2,49 @@
  * @format
  * @flow
  */
-import firebase from "react-native-firebase";
-import React, { Component, Fragment } from "react";
+import firebase from 'react-native-firebase';
+import React, { Component, Fragment } from 'react';
 import { StyleSheet } from 'react-native';
-import { View, Caption, Text, Title, FormGroup, Spinner } from "@shoutem/ui";
-import { GoogleSignin, GoogleSigninButton } from "react-native-google-signin";
-
-GoogleSignin.configure();
+import {
+  View,
+  Caption,
+  Text,
+  Title,
+  FormGroup,
+  Spinner,
+  TextInput,
+  Button,
+} from '@shoutem/ui';
 
 type Props = {
-  navigation: any
+  navigation: any,
 };
 
 type State = {
-  isSending: boolean
+  isSending: boolean,
+  email: string,
+  password: string,
+  emailError: string,
+  passwordError: string,
+  enabledButton: boolean,
 };
 
 export default class SignIn extends Component<Props, State> {
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      isSending: false
-    };
-  }
+  state = {
+    isSending: false,
+    email: '',
+    password: '',
+    emailError: '',
+    passwordError: '',
+    enabledButton: false,
+  };
 
   asyncState = (state: any) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.setState(state, resolve);
     });
   };
@@ -40,78 +52,125 @@ export default class SignIn extends Component<Props, State> {
   signIn = async () => {
     try {
       await this.asyncState({ isSending: true });
-      const data = await GoogleSignin.signIn();
 
-      const credential = firebase.auth.GoogleAuthProvider.credential(
-        data.idToken,
-        data.accessToken
-      );
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password);
 
-      const { user } = await firebase.auth().signInWithCredential(credential);
+      await this.asyncState({ isSending: false });
 
-      await this.saveUserAndRedirect(user);
-    } catch (error) {
-      console.warn(error);
-      this.props.navigation.replace("SignIn");
+      this.props.navigation.replace('SuccesLogin');
+    } catch (e) {
+      await this.asyncState({ isSending: false });
+      const errorCode = e.code;
+      switch (errorCode) {
+        case 'auth/invalid-email':
+          await this.asyncState({
+            emailError: 'Formato de email incorrecto',
+          });
+          break;
+        case 'auth/user-not-found':
+          await this.asyncState({
+            emailError: 'Email no registrado',
+          });
+          break;
+        case 'auth/wrong-password':
+          await this.asyncState({
+            passwordError: 'Contraseña y/o correo incorrectos',
+          });
+          break;
+        default:
+          return await this.asyncState({ emailError: '' });
+      }
     }
   };
 
-  saveUserAndRedirect = async user => {
-    const userRef = firebase.database().ref(`drivers/${user.uid}`);
-    const docsRef = firebase.database().ref(`docs/${user.uid}`);
-
-    await userRef.set({
-      displayName: user.displayName,
-      email: user.email,
-      emailVerified: user.emailVerified,
-      isAnonymous: false,
-      photoURL: user.photoURL,
-      providerId: user.providerId,
-      uid: user.uid
-    });
-
-    const docsSnap = await docsRef.once("value");
-    const docs = docsSnap.val();
-
-    if (docs === null) {
-      return this.props.navigation.replace("Taxi");
+  onChangeEmail = async (text) => {
+    const emailText = text;
+    const passwordText = this.state.password;
+    if (emailText !== '' && passwordText !== '') {
+      await this.asyncState({ enabledButton: true, emailError: '' });
+    } else {
+      await this.asyncState({ enabledButton: false });
     }
+    await this.asyncState({ email: text });
+  };
 
-    return this.props.navigation.replace("Home");
+  onChangePassword = async (text) => {
+    const emailText = this.state.email;
+    const passwordText = text;
+    if (emailText !== '' && passwordText !== '') {
+      await this.asyncState({ enabledButton: true, passwordError: '' });
+    } else {
+      await this.asyncState({ enabledButton: false });
+    }
+    await this.asyncState({ password: text });
   };
 
   render() {
-    const { isSending } = this.state;
+    const {
+      isSending,
+      email,
+      password,
+      emailError,
+      passwordError,
+      enabledButton,
+    } = this.state;
 
     return (
-      <View style={ styles.main }>
-        <View style={ styles.container }>
-          <Title styleName="h-center" style={ styles.title }>
+      <View style={styles.main}>
+        <View style={styles.container}>
+          <Title styleName="h-center" style={styles.title}>
             ¡HEY! TAXI
           </Title>
 
-          <Caption styleName="h-center" style={ styles.caption }>
+          <Caption styleName="h-center" style={styles.caption}>
             Conductores
           </Caption>
 
           <Fragment>
-            <Text styleName="h-center" style={ styles.text }>
-              Accede con tu cuenta de google.
+            <Text styleName="h-center" style={styles.text}>
+              Ingresa tu correo y contraseña.
             </Text>
 
-            {
-              isSending
-                ? <Spinner />
-                : <FormGroup style = { styles.group }>
-                    <GoogleSigninButton
-                      style={ styles.googleButton }
-                      size={GoogleSigninButton.Size.Wide}
-                      color={GoogleSigninButton.Color.Light}
-                      onPress={this.signIn}
-                      disabled={isSending}
-                    />
-                  </FormGroup>
-            }
+            {isSending ? (
+              <Spinner />
+            ) : (
+              <View>
+                <FormGroup>
+                  <Caption>EMAIL</Caption>
+                  <TextInput
+                    onChangeText={(email) => this.onChangeEmail(email)}
+                    placeholder="example@mail.com"
+                    keyboardType="email-address"
+                    style={styles.emailInput}
+                    value={email}
+                  />
+                </FormGroup>
+                {emailError !== '' && (
+                  <Text style={styles.errorMessage}>{emailError}</Text>
+                )}
+                <FormGroup style={styles.passwordForm}>
+                  <Caption>CONTRASEÑA</Caption>
+                  <TextInput
+                    onChangeText={(password) => this.onChangePassword(password)}
+                    placeholder="********"
+                    style={{ marginBottom: 5 }}
+                    value={password}
+                    secureTextEntry
+                  />
+                </FormGroup>
+                <Text style={styles.errorMessage}>{passwordError}</Text>
+                <Button
+                  styleName={`secondary ${!enabledButton ? 'muted' : ''}`}
+                  onPress={this.signIn}
+                  style={styles.loginButton}
+                  disabled={!enabledButton}
+                >
+                  <Text>Iniciar sesión</Text>
+                </Button>
+              </View>
+            )}
           </Fragment>
         </View>
       </View>
@@ -122,27 +181,31 @@ export default class SignIn extends Component<Props, State> {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   container: {
-    width: "80%"
+    width: '80%',
   },
   title: {
-    marginBottom: 2
+    marginBottom: 2,
   },
   caption: {
-    marginBottom: 40
+    marginBottom: 40,
   },
   text: {
-    marginBottom: 18
+    marginBottom: 18,
   },
-  group: {
-    alignItems: "center",
-    justifyContent: "center"
+  emailInput: {
+    marginBottom: 5,
   },
-  googleButton: {
-    width: 280,
-    height: 48
-  }
+  errorMessage: {
+    color: 'red',
+  },
+  passwordForm: {
+    marginTop: 20,
+  },
+  loginButton: {
+    marginTop: 20,
+  },
 });
