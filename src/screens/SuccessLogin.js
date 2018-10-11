@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
 import { View, Caption, Title, Text, Icon } from '@shoutem/ui';
 
-class SuccesLogin extends Component {
+class SuccessLogin extends Component {
   static navigationOptions = {
     header: null,
   };
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SuccesLogin;
+export default SuccessLogin;

@@ -40,7 +40,7 @@ export default class SignIn extends Component<Props, State> {
     password: '',
     emailError: '',
     passwordError: '',
-    enabledButton: false,
+    canLogin: false,
   };
 
   asyncState = (state: any) => {
@@ -59,10 +59,12 @@ export default class SignIn extends Component<Props, State> {
 
       await this.asyncState({ isSending: false });
 
-      this.props.navigation.replace('SuccesLogin');
+      this.props.navigation.replace('SuccessLogin');
     } catch (e) {
       await this.asyncState({ isSending: false });
+
       const errorCode = e.code;
+
       switch (errorCode) {
         case 'auth/invalid-email':
           await this.asyncState({
@@ -88,23 +90,21 @@ export default class SignIn extends Component<Props, State> {
   onChangeEmail = async (text) => {
     const emailText = text;
     const passwordText = this.state.password;
+    const nextState = { email: text, canLogin: false, emailError: '' };
     if (emailText !== '' && passwordText !== '') {
-      await this.asyncState({ enabledButton: true, emailError: '' });
-    } else {
-      await this.asyncState({ enabledButton: false });
+      nextState.canLogin = true;
     }
-    await this.asyncState({ email: text });
+    await this.asyncState(nextState);
   };
 
   onChangePassword = async (text) => {
     const emailText = this.state.email;
     const passwordText = text;
+    const nextState = { password: text, canLogin: false, passwordError: '' }
     if (emailText !== '' && passwordText !== '') {
-      await this.asyncState({ enabledButton: true, passwordError: '' });
-    } else {
-      await this.asyncState({ enabledButton: false });
+      nextState.canLogin = true;
     }
-    await this.asyncState({ password: text });
+    await this.asyncState(nextState);
   };
 
   render() {
@@ -114,7 +114,7 @@ export default class SignIn extends Component<Props, State> {
       password,
       emailError,
       passwordError,
-      enabledButton,
+      canLogin,
     } = this.state;
 
     return (
@@ -140,7 +140,7 @@ export default class SignIn extends Component<Props, State> {
                 <FormGroup>
                   <Caption>EMAIL</Caption>
                   <TextInput
-                    onChangeText={(email) => this.onChangeEmail(email)}
+                    onChangeText={this.onChangeEmail}
                     placeholder="example@mail.com"
                     keyboardType="email-address"
                     style={styles.emailInput}
@@ -153,7 +153,7 @@ export default class SignIn extends Component<Props, State> {
                 <FormGroup style={styles.passwordForm}>
                   <Caption>CONTRASEÑA</Caption>
                   <TextInput
-                    onChangeText={(password) => this.onChangePassword(password)}
+                    onChangeText={this.onChangePassword}
                     placeholder="********"
                     style={{ marginBottom: 5 }}
                     value={password}
@@ -162,10 +162,10 @@ export default class SignIn extends Component<Props, State> {
                 </FormGroup>
                 <Text style={styles.errorMessage}>{passwordError}</Text>
                 <Button
-                  styleName={`secondary ${!enabledButton ? 'muted' : ''}`}
+                  styleName={`secondary ${!canLogin ? 'muted' : ''}`}
                   onPress={this.signIn}
                   style={styles.loginButton}
-                  disabled={!enabledButton}
+                  disabled={!canLogin}
                 >
                   <Text>Iniciar sesión</Text>
                 </Button>

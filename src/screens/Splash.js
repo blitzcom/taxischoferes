@@ -34,7 +34,7 @@ export default class Splash extends Component<Props> {
 
   async onAuthStateChanged(user) {
     if (user) {
-      return this.props.navigation.replace('SuccesLogin');
+      return this.props.navigation.replace('SuccessLogin');
     }
 
     this.props.navigation.replace('SignIn');
