@@ -18,6 +18,7 @@ type State = {
   isAvailable: boolean,
   origin: null | Object,
   tripId: null | string,
+  selfCoords: null | Object,
   uid: string,
 };
 
@@ -40,6 +41,7 @@ export default class Home extends Component<Props, State> {
       isAvailable: false,
       origin: null,
       tripId: null,
+      selfCoords: null,
       uid: user.uid,
     };
   }
@@ -65,8 +67,19 @@ export default class Home extends Component<Props, State> {
     this.setState({ isAvailable });
   };
 
+  onCoordsChanged = (selfCoords: Object) => {
+    this.setState({ selfCoords });
+  };
+
   render() {
-    const { tripId, origin, destiny, uid, isAvailable } = this.state;
+    const {
+      tripId,
+      origin,
+      destiny,
+      uid,
+      isAvailable,
+      selfCoords,
+    } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white', position: 'relative' }}>
@@ -74,8 +87,20 @@ export default class Home extends Component<Props, State> {
           onNewTrip={this.onNewTrip}
           onChangeAvailability={this.onChangeAvailability}
         />
-        {isAvailable && <LocationTracker userId={uid} />}
-        <Map onNewTrip={this.onNewTrip} origin={origin} destiny={destiny} />
+
+        {isAvailable && (
+          <LocationTracker
+            userId={uid}
+            onCoordsChanged={this.onCoordsChanged}
+          />
+        )}
+
+        <Map
+          onNewTrip={this.onNewTrip}
+          origin={origin}
+          destiny={destiny}
+          selfCoords={selfCoords}
+        />
         {tripId && (
           <Machine
             dismiss={this.onDismiss}

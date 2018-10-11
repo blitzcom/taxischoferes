@@ -9,11 +9,11 @@ import { googleMapsStyle } from '../maps';
 
 type Props = {
   onNewTrip: (data: any) => void,
+  selfCoords: null || Object,
 };
 
 type State = {
   hasRegion: boolean,
-  region: Object,
 };
 
 export default class Map extends Component<Props, State> {
@@ -74,6 +74,7 @@ export default class Map extends Component<Props, State> {
 
   render() {
     const { region, hasRegion } = this.state;
+    const { selfCoords } = this.props;
 
     return (
       <Fragment>
@@ -85,9 +86,9 @@ export default class Map extends Component<Props, State> {
               showsPointsOfInterest={false}
               showsTraffic={false}
               showsIndoors={false}
-              region={region}
+              initialRegion={region}
             >
-              <Marker tracksViewChanges={false} coordinate={region} />
+              {selfCoords && <Marker coordinate={selfCoords} />}
             </MapView>
           ) : (
             <Spinner />
