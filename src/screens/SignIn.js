@@ -59,7 +59,7 @@ export default class SignIn extends Component<Props, State> {
 
       await this.asyncState({ isSending: false });
 
-      this.props.navigation.replace('SuccessLogin');
+      this.props.navigation.replace('Home');
     } catch (e) {
       await this.asyncState({ isSending: false });
 
