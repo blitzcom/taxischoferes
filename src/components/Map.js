@@ -1,19 +1,19 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import firebase from 'react-native-firebase';
 import { Alert } from 'react-native';
-import { Spinner, Switch, Text, View } from '@shoutem/ui';
+import { Spinner, View } from '@shoutem/ui';
 
 import { googleMapsStyle } from '../maps';
 
 type Props = {
   onNewTrip: (data: any) => void,
-  selfCoords: null || Object,
+  selfCoords: null | Object,
 };
 
 type State = {
   hasRegion: boolean,
+  region: Object,
 };
 
 export default class Map extends Component<Props, State> {
