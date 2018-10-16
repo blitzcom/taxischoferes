@@ -2,6 +2,7 @@ import { Component } from 'react';
 
 type Props = {
   changeState: () => void,
+  dismiss: () => void
 };
 
 class Taked extends Component<Props> {
@@ -13,9 +14,5 @@ class Taked extends Component<Props> {
     return null;
   }
 }
-
-Taked.defaultProps = {
-  dismiss: () => {},
-};
 
 export default Taked;

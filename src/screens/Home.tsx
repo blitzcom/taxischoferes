@@ -1,7 +1,5 @@
-// @flow
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
-import { StyleSheet } from 'react-native';
 import { View } from '@shoutem/ui';
 
 import Map from '../components/Map';
@@ -74,8 +72,6 @@ export default class Home extends Component<Props, State> {
   render() {
     const {
       tripId,
-      origin,
-      destiny,
       uid,
       isAvailable,
       selfCoords,
@@ -97,8 +93,6 @@ export default class Home extends Component<Props, State> {
 
         <Map
           onNewTrip={this.onNewTrip}
-          origin={origin}
-          destiny={destiny}
           selfCoords={selfCoords}
         />
         {tripId && (

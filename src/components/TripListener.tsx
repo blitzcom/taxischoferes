@@ -1,17 +1,16 @@
-// @flow
 import React, { Component } from 'react';
-import firebase, { Reference, DataSnapshot } from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import { StyleSheet } from 'react-native';
 import { Spinner, Switch, Text, View } from '@shoutem/ui';
 
 type Props = {
-  onChangeAvailability: (isAvailable: boolean) => void,
-  onNewTrip: (key: string) => void,
+  onChangeAvailability: (isAvailable: boolean) => void;
+  onNewTrip: (key: string) => void;
 };
 
 type State = {
-  isAvailabilityChanging: boolean,
-  isAvailable: boolean,
+  isAvailabilityChanging: boolean;
+  isAvailable: boolean;
 };
 
 class TripListener extends Component<Props, State> {
@@ -20,9 +19,8 @@ class TripListener extends Component<Props, State> {
     onNewTrip: () => {},
   };
 
-  onNewTrip: (snapshot: DataSnapshot) => void;
-  subscription: Function;
-  tripsRef: Reference;
+  subscription: any;
+  tripsRef: any;
 
   state = {
     isAvailabilityChanging: false,
@@ -50,7 +48,7 @@ class TripListener extends Component<Props, State> {
     this.makeAvailable();
   }
 
-  syncSetState = (nextState: Object) => {
+  syncSetState = (nextState: any) => {
     return new Promise((resolve) => {
       this.setState(nextState, resolve);
     });
@@ -62,12 +60,12 @@ class TripListener extends Component<Props, State> {
     });
   };
 
-  onNewTrip = (snapshot: DataSnapshot) => {
+  newTrip = (snapshot: any) => {
     this.props.onNewTrip(snapshot.key);
   };
 
   makeAvailable = () => {
-    this.subscription = this.tripsRef.on('child_added', this.onNewTrip);
+    this.subscription = this.tripsRef.on('child_added', this.newTrip);
   };
 
   makeUnavailable = () => {

@@ -1,7 +1,3 @@
-/**
- * @format
- * @flow
- */
 import firebase from 'react-native-firebase';
 import React, { Component, Fragment } from 'react';
 import { StyleSheet } from 'react-native';
@@ -26,7 +22,7 @@ type State = {
   password: string,
   emailError: string,
   passwordError: string,
-  enabledButton: boolean,
+  canLogin: boolean,
 };
 
 export default class SignIn extends Component<Props, State> {
@@ -87,7 +83,7 @@ export default class SignIn extends Component<Props, State> {
     }
   };
 
-  onChangeEmail = async (text) => {
+  onChangeEmail = async (text: string) => {
     const emailText = text;
     const passwordText = this.state.password;
     const nextState = { email: text, canLogin: false, emailError: '' };
@@ -97,7 +93,7 @@ export default class SignIn extends Component<Props, State> {
     await this.asyncState(nextState);
   };
 
-  onChangePassword = async (text) => {
+  onChangePassword = async (text: string) => {
     const emailText = this.state.email;
     const passwordText = text;
     const nextState = { password: text, canLogin: false, passwordError: '' }

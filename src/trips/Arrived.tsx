@@ -2,21 +2,21 @@ import React, { Component } from 'react';
 import { Button, Text } from '@shoutem/ui';
 
 type Props = {
-  changeState: () => void,
+  changeState: (nextState: any) => void,
 };
 
-class Boarded extends Component<Props> {
+class Arrived extends Component<Props> {
   changeState = () => {
-    this.props.changeState({ state: 'traveling' });
+    this.props.changeState({ state: 'boarded' });
   };
 
   render() {
     return (
       <Button onPress={this.changeState} styleName="secondary">
-        <Text>INICIAR VIAJE</Text>
+        <Text>PASAJERO A BORDO</Text>
       </Button>
     );
   }
 }
 
-export default Boarded;
+export default Arrived;

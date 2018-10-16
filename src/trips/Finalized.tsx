@@ -3,20 +3,21 @@ import { Button, Text } from '@shoutem/ui';
 
 type Props = {
   changeState: () => void,
+  dismiss: () => void,
 };
 
-class Accepted extends Component<Props> {
+class Finalized extends Component<Props> {
   changeState = () => {
-    this.props.changeState({ state: 'arrived' });
+    this.props.dismiss();
   };
 
   render() {
     return (
       <Button onPress={this.changeState} styleName="secondary">
-        <Text>LLEGADO AL LUGAR</Text>
+        <Text>CERRAR</Text>
       </Button>
     );
   }
 }
 
-export default Accepted;
+export default Finalized;

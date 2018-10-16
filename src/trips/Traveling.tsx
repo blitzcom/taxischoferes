@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Text } from '@shoutem/ui';
 
 type Props = {
-  changeState: () => void,
+  changeState: (nextState: any) => void,
 };
 
 class Traveling extends Component<Props> {
