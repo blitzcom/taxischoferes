@@ -8,16 +8,16 @@ import TripListener from '../components/TripListener';
 import LocationTracker from '../components/LocationTracker';
 
 type Props = {
-  navigation: any,
+  navigation: any;
 };
 
 type State = {
-  destiny: null | Object,
-  isAvailable: boolean,
-  origin: null | Object,
-  tripId: null | string,
-  selfCoords: null | Object,
-  uid: string,
+  destiny: null | Object;
+  isAvailable: boolean;
+  origin: null | Object;
+  tripId: null | string;
+  selfCoords: null | Object;
+  uid: string;
 };
 
 export default class Home extends Component<Props, State> {
@@ -70,12 +70,7 @@ export default class Home extends Component<Props, State> {
   };
 
   render() {
-    const {
-      tripId,
-      uid,
-      isAvailable,
-      selfCoords,
-    } = this.state;
+    const { tripId, uid, isAvailable, selfCoords } = this.state;
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white', position: 'relative' }}>
@@ -91,10 +86,7 @@ export default class Home extends Component<Props, State> {
           />
         )}
 
-        <Map
-          onNewTrip={this.onNewTrip}
-          selfCoords={selfCoords}
-        />
+        <Map onNewTrip={this.onNewTrip} selfCoords={selfCoords} />
         {tripId && (
           <Machine
             dismiss={this.onDismiss}

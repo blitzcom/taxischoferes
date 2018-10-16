@@ -13,7 +13,7 @@ import Taked from './Taked';
 import Traveling from './Traveling';
 
 type Props = {
-  step: number,
+  step: number;
 };
 
 class Trip extends Component<Props> {

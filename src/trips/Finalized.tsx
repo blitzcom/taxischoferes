@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Button, Text } from '@shoutem/ui';
 
 type Props = {
-  changeState: () => void,
-  dismiss: () => void,
+  changeState: () => void;
+  dismiss: () => void;
 };
 
 class Finalized extends Component<Props> {

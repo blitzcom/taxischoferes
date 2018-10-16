@@ -1,16 +1,16 @@
-import withForm from "./form";
+import withForm from './form';
 
 export default withForm(
-  "SEGURO",
-  "insurance",
+  'SEGURO',
+  'insurance',
   {
-    id: "",
-    issuer: "",
-    expiration: ""
+    id: '',
+    issuer: '',
+    expiration: '',
   },
   {
-    id: "ID",
-    issuer: "EXPEDIDO POR",
-    expiration: "EXPIRACIÓN"
+    id: 'ID',
+    issuer: 'EXPEDIDO POR',
+    expiration: 'EXPIRACIÓN',
   }
 )();

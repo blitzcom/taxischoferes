@@ -13,16 +13,16 @@ import {
 } from '@shoutem/ui';
 
 type Props = {
-  navigation: any,
+  navigation: any;
 };
 
 type State = {
-  isSending: boolean,
-  email: string,
-  password: string,
-  emailError: string,
-  passwordError: string,
-  canLogin: boolean,
+  isSending: boolean;
+  email: string;
+  password: string;
+  emailError: string;
+  passwordError: string;
+  canLogin: boolean;
 };
 
 export default class SignIn extends Component<Props, State> {
@@ -96,7 +96,7 @@ export default class SignIn extends Component<Props, State> {
   onChangePassword = async (text: string) => {
     const emailText = this.state.email;
     const passwordText = text;
-    const nextState = { password: text, canLogin: false, passwordError: '' }
+    const nextState = { password: text, canLogin: false, passwordError: '' };
     if (emailText !== '' && passwordText !== '') {
       nextState.canLogin = true;
     }

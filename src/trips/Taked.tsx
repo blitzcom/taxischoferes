@@ -1,8 +1,8 @@
 import { Component } from 'react';
 
 type Props = {
-  changeState: () => void,
-  dismiss: () => void
+  changeState: () => void;
+  dismiss: () => void;
 };
 
 class Taked extends Component<Props> {

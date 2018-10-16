@@ -1,16 +1,16 @@
-import withForm from "./form";
+import withForm from './form';
 
 export default withForm(
-  "VEHÍCULO",
-  "vehicle",
+  'VEHÍCULO',
+  'vehicle',
   {
-    brand: "",
-    model: "",
-    plate: ""
+    brand: '',
+    model: '',
+    plate: '',
   },
   {
-    brand: "MARCA",
-    model: "MODELO",
-    plate: "PLACA"
+    brand: 'MARCA',
+    model: 'MODELO',
+    plate: 'PLACA',
   }
 )();

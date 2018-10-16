@@ -1,36 +1,36 @@
 export const googleMapsStyle = [
   {
-    featureType: "administrative",
-    elementType: "geometry",
+    featureType: 'administrative',
+    elementType: 'geometry',
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: 'off',
+      },
+    ],
   },
   {
-    featureType: "poi",
+    featureType: 'poi',
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: 'off',
+      },
+    ],
   },
   {
-    featureType: "road",
-    elementType: "labels.icon",
+    featureType: 'road',
+    elementType: 'labels.icon',
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
+        visibility: 'off',
+      },
+    ],
   },
   {
-    featureType: "transit",
+    featureType: 'transit',
     stylers: [
       {
-        visibility: "off"
-      }
-    ]
-  }
+        visibility: 'off',
+      },
+    ],
+  },
 ];

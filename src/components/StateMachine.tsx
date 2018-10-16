@@ -3,7 +3,10 @@ import { StyleSheet } from 'react-native';
 import firebase from 'react-native-firebase';
 import { View } from '@shoutem/ui';
 
-const createStateMachine = (initialState: null | string = null, states: any) => {
+const createStateMachine = (
+  initialState: null | string = null,
+  states: any
+) => {
   return (WrappedComponent: any) => {
     interface IProps {
       write: string;
