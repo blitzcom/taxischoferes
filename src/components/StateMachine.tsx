@@ -41,7 +41,7 @@ const createStateMachine = (
         }
       }
 
-      listenState = (snapshot: any) => {
+      listenState = (snapshot: any) => { 
         this.setState({ ...snapshot.val() });
       };
 
@@ -74,9 +74,10 @@ const createStateMachine = (
       render() {
         const { state } = this.state;
 
-        if (state === null) {
+        if (state === null || state === "listener") {
           return null;
         }
+        
 
         const { override, step } = states[state];
 

@@ -71,6 +71,7 @@ export default class Home extends Component<Props, State> {
 
   render() {
     const { tripId, uid, isAvailable, selfCoords } = this.state;
+    
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white', position: 'relative' }}>
@@ -90,7 +91,7 @@ export default class Home extends Component<Props, State> {
         {tripId && (
           <Machine
             dismiss={this.onDismiss}
-            read={`tripsByDrivers/${uid}/${tripId}`}
+            read={`trips/${tripId}`}
             write={`trips/${tripId}`}
           />
         )}

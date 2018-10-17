@@ -36,12 +36,9 @@ class TripListener extends Component<Props, State> {
 
     const uid = user.uid;
 
-    this.tripsRef = firebase
+    this.currentTripRef = firebase
       .database()
-      .ref(`tripsByDrivers/${uid}`)
-      .orderByChild('state')
-      .equalTo('pending')
-      .limitToFirst(1);
+      .ref(`drivers/${uid}/currentTrip`);
   }
 
   componentWillUnmount() {
@@ -61,15 +58,16 @@ class TripListener extends Component<Props, State> {
   };
 
   newTrip = (snapshot: any) => {
-    this.props.onNewTrip(snapshot.key);
+    this.props.onNewTrip(snapshot.val());
+    
   };
 
   makeAvailable = () => {
-    this.subscription = this.tripsRef.on('child_added', this.newTrip);
+    this.subscription = this.currentTripRef.on('value', this.newTrip);
   };
 
   makeUnavailable = () => {
-    this.tripsRef.off('child_added', this.subscription);
+    this.currentTripRef.off('value', this.subscription);
   };
 
   onAvailableChange = async (isAvailable: boolean) => {
