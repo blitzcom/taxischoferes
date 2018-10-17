@@ -1,3 +1,7 @@
+/**
+ * @format
+ * @flow
+ */
 import firebase from 'react-native-firebase';
 import React, { Component, Fragment } from 'react';
 import { StyleSheet } from 'react-native';
@@ -13,16 +17,16 @@ import {
 } from '@shoutem/ui';
 
 type Props = {
-  navigation: any;
+  navigation: any,
 };
 
 type State = {
-  isSending: boolean;
-  email: string;
-  password: string;
-  emailError: string;
-  passwordError: string;
-  canLogin: boolean;
+  isSending: boolean,
+  email: string,
+  password: string,
+  emailError: string,
+  passwordError: string,
+  enabledButton: boolean,
 };
 
 export default class SignIn extends Component<Props, State> {
@@ -55,7 +59,7 @@ export default class SignIn extends Component<Props, State> {
 
       await this.asyncState({ isSending: false });
 
-      this.props.navigation.replace('Home');
+      this.props.navigation.replace('SuccessLogin');
     } catch (e) {
       await this.asyncState({ isSending: false });
 
@@ -83,7 +87,7 @@ export default class SignIn extends Component<Props, State> {
     }
   };
 
-  onChangeEmail = async (text: string) => {
+  onChangeEmail = async (text) => {
     const emailText = text;
     const passwordText = this.state.password;
     const nextState = { email: text, canLogin: false, emailError: '' };
@@ -93,10 +97,10 @@ export default class SignIn extends Component<Props, State> {
     await this.asyncState(nextState);
   };
 
-  onChangePassword = async (text: string) => {
+  onChangePassword = async (text) => {
     const emailText = this.state.email;
     const passwordText = text;
-    const nextState = { password: text, canLogin: false, passwordError: '' };
+    const nextState = { password: text, canLogin: false, passwordError: '' }
     if (emailText !== '' && passwordText !== '') {
       nextState.canLogin = true;
     }

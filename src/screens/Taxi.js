@@ -5,7 +5,7 @@ import { TouchableNativeFeedback } from 'react-native';
 import { NavigationBar, Text, View, Icon, Row, Spinner } from '@shoutem/ui';
 
 type Props = {
-  navigation: any;
+  navigation: any,
 };
 
 export default class Taxi extends Component<Props> {
@@ -13,17 +13,18 @@ export default class Taxi extends Component<Props> {
     header: null,
   };
 
-  state = {
-    isLoading: true,
-    isValid: false,
-    insurance: null,
-    license: null,
-    permission: null,
-    vehicle: null,
-  };
+  constructor(props) {
+    super(props);
 
-  navigationSubscription: any;
-  docsRef: any;
+    this.state = {
+      isLoading: true,
+      isValid: false,
+      insurance: null,
+      license: null,
+      permission: null,
+      vehicle: null,
+    };
+  }
 
   async componentDidMount() {
     this.navigationSubscription = this.props.navigation.addListener(
@@ -31,13 +32,9 @@ export default class Taxi extends Component<Props> {
       this.onDidFocus
     );
 
-    const currentUser = firebase.auth().currentUser;
-
-    if (currentUser === null) {
-      throw new Error('Current user is null');
-    }
-
-    this.docsRef = firebase.database().ref(`docs/${currentUser.uid}`);
+    this.docsRef = firebase
+      .database()
+      .ref(`docs/${firebase.auth().currentUser.uid}`);
 
     await this.fetchDocs();
   }
@@ -69,13 +66,13 @@ export default class Taxi extends Component<Props> {
     await this.syncSetState(nextState);
   };
 
-  syncSetState = (nextState: any) => {
+  syncSetState = (nextState) => {
     return new Promise((resolve) => {
       this.setState(nextState, resolve);
     });
   };
 
-  isValid = (state: any) => {
+  isValid = (state) => {
     const { insurance, license, permission, vehicle } = state;
     return insurance && license && permission && vehicle;
   };

@@ -11,57 +11,38 @@ import {
 } from '@shoutem/ui';
 
 type Props = {
-  navigation: any;
+  navigation: any,
 };
 
-interface IState {
-  data: any;
-  edit: { [index: string]: any };
-  hasContent: boolean;
-  isLoading: boolean;
-  isSaving: boolean;
-  isValid: boolean;
-}
-
-const withForm = (
-  title: string,
-  path: string,
-  edit: { [index: string]: any },
-  labels: { [index: string]: any }
-) => {
+const withForm = (title, path, edit = {}, labels = {}) => {
   return () => {
-    class WithForm extends Component<Props, IState> {
+    class WithForm extends Component<Props> {
       static navigationOptions = {
         header: null,
       };
 
-      state = {
-        data: null,
-        edit: edit,
-        hasContent: false,
-        isLoading: true,
-        isSaving: false,
-        isValid: false,
-      };
+      constructor(props) {
+        super(props);
 
-      dataRef: any;
+        this.state = {
+          data: null,
+          edit: edit,
+          hasContent: false,
+          isLoading: true,
+          isSaving: false,
+          isValid: false,
+        };
+      }
 
       async componentDidMount() {
-        const currentUser = firebase.auth().currentUser;
-
-        if (currentUser === null) {
-          throw new Error('Current user is null');
-        }
-
         this.dataRef = firebase
           .database()
-          .ref(`docs/${currentUser.uid}/${path}`);
+          .ref(`docs/${firebase.auth().currentUser.uid}/${path}`);
 
         const dataSnap = await this.dataRef.once('value');
         const data = dataSnap.val();
 
         const nextState = {
-          ...this.state,
           hasContent: true,
           isLoading: false,
           data: data,
@@ -120,7 +101,7 @@ const withForm = (
         });
       };
 
-      onChange = async (key: string, value: any) => {
+      onChange = async (key, value) => {
         await this.syncSetState({
           edit: Object.assign({}, this.state.edit, { [key]: value }),
         });
@@ -139,9 +120,8 @@ const withForm = (
           await this.syncSetState({ isSaving: true });
           await this.dataRef.set(this.state.edit);
           await this.delay();
-          const data = (this.state.data as any) as object;
           await this.syncSetState({
-            data: { ...data, ...this.state.edit },
+            data: { ...this.state.data, ...this.state.edit },
             hasChanged: false,
             isSaving: false,
           });
@@ -158,7 +138,7 @@ const withForm = (
         this.props.navigation.goBack();
       };
 
-      syncSetState = async (nextState: any) => {
+      syncSetState = async (nextState) => {
         return new Promise((resolve) => {
           this.setState(nextState, resolve);
         });
@@ -180,7 +160,7 @@ const withForm = (
                 <TextInput
                   editable={isEditing}
                   value={value}
-                  onChangeText={(text: string) => this.onChange(key, text)}
+                  onChangeText={(text) => this.onChange(key, text)}
                 />
               </FormGroup>
             );
