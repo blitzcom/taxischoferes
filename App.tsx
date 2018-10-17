@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import { createStackNavigator } from "react-navigation";
 import React, { Component } from "react";
 
@@ -17,7 +9,6 @@ import VehicleForm from "./src/screens/forms/Vehicle";
 import LicenseForm from "./src/screens/forms/License";
 import PermissionForm from "./src/screens/forms/Permission";
 import InsuranceForm from "./src/screens/forms/Insurance";
-import SuccessLogin from "./src/screens/SuccessLogin";
 
 const Router = createStackNavigator({
   Splash: Splash,
@@ -28,7 +19,6 @@ const Router = createStackNavigator({
   LicenseForm: LicenseForm,
   PermissionForm: PermissionForm,
   InsuranceForm: InsuranceForm,
-  SuccessLogin: SuccessLogin
 });
 
 type Props = {};

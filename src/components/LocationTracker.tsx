@@ -1,11 +1,10 @@
-// @flow
 import { Component } from 'react';
-import firebase, { Reference } from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import GeoFire from 'geofire';
 
 type Props = {
-  userId: null | string,
-  onCoordsChanged: (location: Object) => void,
+  userId: null | string;
+  onCoordsChanged: (location: Object) => void;
 };
 
 class LocationTracker extends Component<Props> {
@@ -13,9 +12,9 @@ class LocationTracker extends Component<Props> {
     userId: null,
   };
 
-  watchId: number;
-  geoRef: GeoFire;
-  nodeRef: Reference;
+  watchId: any;
+  geoRef: any;
+  nodeRef: any;
 
   componentDidMount() {
     const { userId } = this.props;
@@ -56,14 +55,14 @@ class LocationTracker extends Component<Props> {
     }
   };
 
-  onTracking = (position: Position) => {
+  onTracking = (position: any) => {
     const { latitude, longitude } = position.coords;
 
     this.geoRef.set(this.props.userId, [latitude, longitude]);
     this.props.onCoordsChanged({ latitude, longitude });
   };
 
-  onError = (error: PositionError) => {
+  onError = (error: any) => {
     console.warn(error.message);
   };
 

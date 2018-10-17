@@ -1,17 +1,16 @@
-// @flow
 import React, { Component } from 'react';
-import firebase, { Reference, DataSnapshot } from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import { StyleSheet } from 'react-native';
 import { Spinner, Switch, Text, View } from '@shoutem/ui';
 
 type Props = {
-  onChangeAvailability: (isAvailable: boolean) => void,
-  onNewTrip: (key: string) => void,
+  onChangeAvailability: (isAvailable: boolean) => void;
+  onNewTrip: (key: string) => void;
 };
 
 type State = {
-  isAvailabilityChanging: boolean,
-  isAvailable: boolean,
+  isAvailabilityChanging: boolean;
+  isAvailable: boolean;
 };
 
 class TripListener extends Component<Props, State> {
@@ -20,9 +19,8 @@ class TripListener extends Component<Props, State> {
     onNewTrip: () => {},
   };
 
-  onNewTrip: (snapshot: DataSnapshot) => void;
-  subscription: Function;
-  tripsRef: Reference;
+  subscription: any;
+  tripsRef: any;
 
   state = {
     isAvailabilityChanging: false,
@@ -38,19 +36,16 @@ class TripListener extends Component<Props, State> {
 
     const uid = user.uid;
 
-    this.tripsRef = firebase
+    this.currentTripRef = firebase
       .database()
-      .ref(`tripsByDrivers/${uid}`)
-      .orderByChild('state')
-      .equalTo('pending')
-      .limitToFirst(1);
+      .ref(`drivers/${uid}/currentTrip`);
   }
 
   componentWillUnmount() {
     this.makeAvailable();
   }
 
-  syncSetState = (nextState: Object) => {
+  syncSetState = (nextState: any) => {
     return new Promise((resolve) => {
       this.setState(nextState, resolve);
     });
@@ -62,16 +57,17 @@ class TripListener extends Component<Props, State> {
     });
   };
 
-  onNewTrip = (snapshot: DataSnapshot) => {
-    this.props.onNewTrip(snapshot.key);
+  newTrip = (snapshot: any) => {
+    this.props.onNewTrip(snapshot.val());
+    
   };
 
   makeAvailable = () => {
-    this.subscription = this.tripsRef.on('child_added', this.onNewTrip);
+    this.subscription = this.currentTripRef.on('value', this.newTrip);
   };
 
   makeUnavailable = () => {
-    this.tripsRef.off('child_added', this.subscription);
+    this.currentTripRef.off('value', this.subscription);
   };
 
   onAvailableChange = async (isAvailable: boolean) => {

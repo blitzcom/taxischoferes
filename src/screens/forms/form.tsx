@@ -11,38 +11,57 @@ import {
 } from '@shoutem/ui';
 
 type Props = {
-  navigation: any,
+  navigation: any;
 };
 
-const withForm = (title, path, edit = {}, labels = {}) => {
+interface IState {
+  data: any;
+  edit: { [index: string]: any };
+  hasContent: boolean;
+  isLoading: boolean;
+  isSaving: boolean;
+  isValid: boolean;
+}
+
+const withForm = (
+  title: string,
+  path: string,
+  edit: { [index: string]: any },
+  labels: { [index: string]: any }
+) => {
   return () => {
-    class WithForm extends Component<Props> {
+    class WithForm extends Component<Props, IState> {
       static navigationOptions = {
         header: null,
       };
 
-      constructor(props) {
-        super(props);
+      state = {
+        data: null,
+        edit: edit,
+        hasContent: false,
+        isLoading: true,
+        isSaving: false,
+        isValid: false,
+      };
 
-        this.state = {
-          data: null,
-          edit: edit,
-          hasContent: false,
-          isLoading: true,
-          isSaving: false,
-          isValid: false,
-        };
-      }
+      dataRef: any;
 
       async componentDidMount() {
+        const currentUser = firebase.auth().currentUser;
+
+        if (currentUser === null) {
+          throw new Error('Current user is null');
+        }
+
         this.dataRef = firebase
           .database()
-          .ref(`docs/${firebase.auth().currentUser.uid}/${path}`);
+          .ref(`docs/${currentUser.uid}/${path}`);
 
         const dataSnap = await this.dataRef.once('value');
         const data = dataSnap.val();
 
         const nextState = {
+          ...this.state,
           hasContent: true,
           isLoading: false,
           data: data,
@@ -101,7 +120,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         });
       };
 
-      onChange = async (key, value) => {
+      onChange = async (key: string, value: any) => {
         await this.syncSetState({
           edit: Object.assign({}, this.state.edit, { [key]: value }),
         });
@@ -120,8 +139,9 @@ const withForm = (title, path, edit = {}, labels = {}) => {
           await this.syncSetState({ isSaving: true });
           await this.dataRef.set(this.state.edit);
           await this.delay();
+          const data = (this.state.data as any) as object;
           await this.syncSetState({
-            data: { ...this.state.data, ...this.state.edit },
+            data: { ...data, ...this.state.edit },
             hasChanged: false,
             isSaving: false,
           });
@@ -138,7 +158,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
         this.props.navigation.goBack();
       };
 
-      syncSetState = async (nextState) => {
+      syncSetState = async (nextState: any) => {
         return new Promise((resolve) => {
           this.setState(nextState, resolve);
         });
@@ -160,7 +180,7 @@ const withForm = (title, path, edit = {}, labels = {}) => {
                 <TextInput
                   editable={isEditing}
                   value={value}
-                  onChangeText={(text) => this.onChange(key, text)}
+                  onChangeText={(text: string) => this.onChange(key, text)}
                 />
               </FormGroup>
             );

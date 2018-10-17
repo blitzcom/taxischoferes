@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import StepIndicator from 'react-native-step-indicator';
 import { View } from '@shoutem/ui';
 
 import createStateMachine from '../components/StateMachine';
@@ -14,21 +13,15 @@ import Taked from './Taked';
 import Traveling from './Traveling';
 
 type Props = {
-  children: any,
-  step: number,
+  step: number;
 };
 
 class Trip extends Component<Props> {
   render() {
-    const { children, step } = this.props;
+    const { children } = this.props;
 
     return (
       <Fragment>
-        <StepIndicator
-          currentPosition={step}
-          customStyles={stepIndicatorStyles}
-          stepCount={5}
-        />
         <View style={{ marginTop: 10 }}>{children}</View>
       </Fragment>
     );

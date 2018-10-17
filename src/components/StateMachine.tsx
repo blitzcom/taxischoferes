@@ -3,12 +3,25 @@ import { StyleSheet } from 'react-native';
 import firebase from 'react-native-firebase';
 import { View } from '@shoutem/ui';
 
-const createStateMachine = (initialState, states) => {
-  return (WrappedComponent) => {
-    class StateMachine extends Component {
+const createStateMachine = (
+  initialState: null | string = null,
+  states: any
+) => {
+  return (WrappedComponent: any) => {
+    interface IProps {
+      write: string;
+      read: string;
+      dismiss: () => void;
+    }
+
+    class StateMachine extends Component<IProps> {
       state = {
-        state: null,
+        state: initialState,
       };
+
+      writeNodeRef: any;
+      readNodeRef: any;
+      subscription: any;
 
       componentDidMount() {
         const { write, read } = this.props;
@@ -28,11 +41,11 @@ const createStateMachine = (initialState, states) => {
         }
       }
 
-      listenState = (snapshot) => {
+      listenState = (snapshot: any) => { 
         this.setState({ ...snapshot.val() });
       };
 
-      onChangeState = (nextState, writeOnReader = false) => {
+      onChangeState = (nextState: any, writeOnReader = false) => {
         if (writeOnReader) {
           return this.readNodeRef.update(nextState);
         }
@@ -42,6 +55,11 @@ const createStateMachine = (initialState, states) => {
 
       renderMachine = () => {
         const { state } = this.state;
+
+        if (state === null) {
+          return null;
+        }
+
         const { component: Machine } = states[state];
 
         return (
@@ -56,9 +74,10 @@ const createStateMachine = (initialState, states) => {
       render() {
         const { state } = this.state;
 
-        if (state === null) {
+        if (state === null || state === "listener") {
           return null;
         }
+        
 
         const { override, step } = states[state];
 
