@@ -1,12 +1,26 @@
+/**
+ * @format
+ * @flow
+ */
+
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { StyleSheet } from 'react-native';
+import type { NavigationScreenProp } from 'react-navigation';
 import { View, Title, Spinner, Caption } from '@shoutem/ui';
 
-export default class Splash extends Component<{ navigation: any }> {
+type Props = { navigation: NavigationScreenProp<*> };
+
+export default class Splash extends Component<Props> {
   static navigationOptions = {
     header: null,
   };
+
+  constructor(props) {
+    super(props);
+
+    this.onAuthStateChanged = this.onAuthStateChanged.bind(this);
+  }
 
   asyncState = (state: any) => {
     return new Promise((resolve) => {
@@ -18,13 +32,13 @@ export default class Splash extends Component<{ navigation: any }> {
     firebase.auth().onAuthStateChanged(this.onAuthStateChanged);
   }
 
-  onAuthStateChanged = async (user: any) => {
+  async onAuthStateChanged(user) {
     if (user) {
-      return this.props.navigation.replace('Home');
+      return this.props.navigation.replace('SuccessLogin');
     }
 
     this.props.navigation.replace('SignIn');
-  };
+  }
 
   render() {
     return (

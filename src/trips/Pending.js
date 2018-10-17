@@ -3,13 +3,12 @@ import { Button, Text, View, ImageBackground, Title } from '@shoutem/ui';
 import firebase from 'react-native-firebase';
 
 type Props = {
-  changeState: (nextState: any) => void;
-  origin: any;
+  changeState: () => void,
 };
 
 class Pending extends Component<Props> {
   onAccept = () => {
-    const user: any = firebase.auth().currentUser;
+    const user = firebase.auth().currentUser;
 
     const driver = {
       displayName: user.displayName,
@@ -20,7 +19,7 @@ class Pending extends Component<Props> {
   };
 
   onCancel = () => {
-    this.props.changeState({ state: 'cancel' });
+    this.props.changeState({ state: 'cancel' }, true);
   };
 
   render() {

@@ -1,3 +1,4 @@
+// @flow
 import React, { Component, Fragment } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import { Alert } from 'react-native';
@@ -6,13 +7,13 @@ import { Spinner, View } from '@shoutem/ui';
 import { googleMapsStyle } from '../maps';
 
 type Props = {
-  onNewTrip: (data: any) => void;
-  selfCoords: null | Object;
+  onNewTrip: (data: any) => void,
+  selfCoords: null | Object,
 };
 
 type State = {
-  hasRegion: boolean;
-  region: Object;
+  hasRegion: boolean,
+  region: Object,
 };
 
 export default class Map extends Component<Props, State> {
@@ -30,9 +31,9 @@ export default class Map extends Component<Props, State> {
     this.loadCurrentPosition();
   }
 
-  syncSetState = (nextState: any) => {
+  syncSetState = (nextState: Object) => {
     return new Promise((resolve) => {
-      this.setState(nextState, resolve);
+      this.setState((nextState: Object), resolve);
     });
   };
 
@@ -44,7 +45,7 @@ export default class Map extends Component<Props, State> {
 
   loadCurrentPosition = async () => {
     try {
-      const position: any = await this.getCurrentPosition({
+      const position = await this.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 25000,
         maximumAge: 1000,
@@ -72,11 +73,8 @@ export default class Map extends Component<Props, State> {
   };
 
   render() {
-    const {
-      region,
-      hasRegion,
-    }: { region: any; hasRegion: boolean } = this.state;
-    const { selfCoords }: { selfCoords: any } = this.props;
+    const { region, hasRegion } = this.state;
+    const { selfCoords } = this.props;
 
     return (
       <Fragment>

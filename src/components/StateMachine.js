@@ -1,64 +1,47 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
-import firebase, { RNFirebase } from 'react-native-firebase';
+import firebase from 'react-native-firebase';
 import { View } from '@shoutem/ui';
 
-export interface IMachineStates {
-  [index: string]: {
-    component: React.ComponentClass<any, any>;
-    step?: number;
-    override?: boolean;
-  };
-}
-
-const createStateMachine = (
-  initialState: null | string,
-  states: IMachineStates
-) => {
-  return (WrappedComponent: any) => {
-    interface IProps {
-      tripId: string;
-      dismiss: () => void;
-    }
-
-    class StateMachine extends PureComponent<IProps> {
+const createStateMachine = (initialState, states) => {
+  return (WrappedComponent) => {
+    class StateMachine extends Component {
       state = {
-        state: initialState,
+        state: null,
       };
 
-      nodeRef: RNFirebase.database.Reference;
-
       componentDidMount() {
-        const { tripId } = this.props;
+        const { write, read } = this.props;
 
-        this.nodeRef = firebase
-          .database()
-          .ref('trips')
-          .child(tripId);
-        this.nodeRef.on('value', this.listenState);
+        if (write === null || read === null) {
+          return;
+        }
+
+        this.writeNodeRef = firebase.database().ref(write);
+        this.readNodeRef = firebase.database().ref(read);
+        this.subscription = this.readNodeRef.on('value', this.listenState);
       }
 
       componentWillUnmount() {
-        if (this.nodeRef) {
-          this.nodeRef.off();
+        if (this.readNodeRef) {
+          this.readNodeRef.off('value', this.subscription);
         }
       }
 
-      listenState = (snapshot: RNFirebase.database.DataSnapshot) => {
-        this.setState(snapshot.val());
+      listenState = (snapshot) => {
+        this.setState({ ...snapshot.val() });
       };
 
-      onChangeState = (nextState: any) => {
-        return this.nodeRef.update(nextState);
+      onChangeState = (nextState, writeOnReader = false) => {
+        if (writeOnReader) {
+          return this.readNodeRef.update(nextState);
+        }
+
+        return this.writeNodeRef.update(nextState);
       };
 
       renderMachine = () => {
         const { state } = this.state;
-
-        if (state === null) {
-          return null;
-        }
-
         const { component: Machine } = states[state];
 
         return (
