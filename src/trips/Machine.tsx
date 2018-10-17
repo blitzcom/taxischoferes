@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import StepIndicator from 'react-native-step-indicator';
 import { View } from '@shoutem/ui';
 
-import createStateMachine from '../components/StateMachine';
+import createStateMachine, { IMachineStates } from '../components/StateMachine';
 
 import Accepted from './Accepted';
 import Arrived from './Arrived';
@@ -14,28 +13,22 @@ import Taked from './Taked';
 import Traveling from './Traveling';
 
 type Props = {
-  children: any,
-  step: number,
+  step: number;
 };
 
 class Trip extends Component<Props> {
   render() {
-    const { children, step } = this.props;
+    const { children } = this.props;
 
     return (
       <Fragment>
-        <StepIndicator
-          currentPosition={step}
-          customStyles={stepIndicatorStyles}
-          stepCount={5}
-        />
         <View style={{ marginTop: 10 }}>{children}</View>
       </Fragment>
     );
   }
 }
 
-const states = {
+const states: IMachineStates = {
   accepted: {
     component: Accepted,
     step: 0,
@@ -68,7 +61,7 @@ const states = {
   },
 };
 
-const Machine = createStateMachine('listener', states)(Trip);
+const Machine = createStateMachine(null, states)(Trip);
 
 const stepIndicatorStyles = {
   stepIndicatorSize: 20,
