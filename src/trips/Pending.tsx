@@ -3,7 +3,7 @@ import { Button, Text, View, ImageBackground, Title } from '@shoutem/ui';
 import firebase from 'react-native-firebase';
 
 type Props = {
-  changeState: (nextState: any, overwrite?: boolean) => void;
+  changeState: (nextState: any) => void;
   origin: any;
 };
 
@@ -20,7 +20,7 @@ class Pending extends Component<Props> {
   };
 
   onCancel = () => {
-    this.props.changeState({ state: 'cancel' }, true);
+    this.props.changeState({ state: 'cancel' });
   };
 
   render() {

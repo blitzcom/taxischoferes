@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { View } from '@shoutem/ui';
 
-import createStateMachine from '../components/StateMachine';
+import createStateMachine, { IMachineStates } from '../components/StateMachine';
 
 import Accepted from './Accepted';
 import Arrived from './Arrived';
@@ -28,7 +28,7 @@ class Trip extends Component<Props> {
   }
 }
 
-const states = {
+const states: IMachineStates = {
   accepted: {
     component: Accepted,
     step: 0,
@@ -61,7 +61,7 @@ const states = {
   },
 };
 
-const Machine = createStateMachine('listener', states)(Trip);
+const Machine = createStateMachine(null, states)(Trip);
 
 const stepIndicatorStyles = {
   stepIndicatorSize: 20,

@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
-import firebase from 'react-native-firebase';
+import firebase, { RNFirebase } from 'react-native-firebase';
 import { StyleSheet } from 'react-native';
 import { Spinner, Switch, Text, View } from '@shoutem/ui';
 
-type Props = {
+interface IProps {
   onChangeAvailability: (isAvailable: boolean) => void;
   onNewTrip: (key: string) => void;
-};
+}
 
-type State = {
+interface IState {
   isAvailabilityChanging: boolean;
   isAvailable: boolean;
-};
+}
 
-class TripListener extends Component<Props, State> {
+class TripListener extends Component<IProps, IState> {
   static defaultProps = {
     onChangeAvailability: () => {},
     onNewTrip: () => {},
   };
 
-  subscription: any;
-  tripsRef: any;
+  tripsRef: RNFirebase.database.Reference;
 
   state = {
     isAvailabilityChanging: false,
@@ -38,14 +37,13 @@ class TripListener extends Component<Props, State> {
 
     this.tripsRef = firebase
       .database()
-      .ref(`tripsByDrivers/${uid}`)
-      .orderByChild('state')
-      .equalTo('pending')
-      .limitToFirst(1);
+      .ref('drivers')
+      .child(uid)
+      .child('currentTrip');
   }
 
   componentWillUnmount() {
-    this.makeAvailable();
+    this.makeUnavailable();
   }
 
   syncSetState = (nextState: any) => {
@@ -60,16 +58,18 @@ class TripListener extends Component<Props, State> {
     });
   };
 
-  newTrip = (snapshot: any) => {
-    this.props.onNewTrip(snapshot.key);
+  newTrip = (snapshot: RNFirebase.database.DataSnapshot) => {
+    if (snapshot.val()) {
+      this.props.onNewTrip(snapshot.val());
+    }
   };
 
   makeAvailable = () => {
-    this.subscription = this.tripsRef.on('child_added', this.newTrip);
+    this.tripsRef.on('value', this.newTrip);
   };
 
   makeUnavailable = () => {
-    this.tripsRef.off('child_added', this.subscription);
+    this.tripsRef.off();
   };
 
   onAvailableChange = async (isAvailable: boolean) => {

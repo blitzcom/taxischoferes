@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import firebase from 'react-native-firebase';
 import { View } from '@shoutem/ui';
 
@@ -87,13 +87,8 @@ export default class Home extends Component<Props, State> {
         )}
 
         <Map onNewTrip={this.onNewTrip} selfCoords={selfCoords} />
-        {tripId && (
-          <Machine
-            dismiss={this.onDismiss}
-            read={`tripsByDrivers/${uid}/${tripId}`}
-            write={`trips/${tripId}`}
-          />
-        )}
+
+        {tripId && <Machine dismiss={this.onDismiss} tripId={tripId} />}
       </View>
     );
   }
