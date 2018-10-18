@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from 'react-native-firebase';
 import { StyleSheet } from 'react-native';
-import { View, Title, Spinner, Caption } from '@shoutem/ui';
+import { View, Title, Spinner, Caption, Image } from '@shoutem/ui';
 
 export default class Splash extends Component<{ navigation: any }> {
   static navigationOptions = {
@@ -30,13 +30,15 @@ export default class Splash extends Component<{ navigation: any }> {
     return (
       <View style={styles.main}>
         <View style={styles.container}>
-          <Title styleName="h-center" style={styles.logo}>
-            ¡HEY! TAXI
-          </Title>
+          <Image
+            styleName="medium-avatar"
+            source={require('../../assets/icono.png')}
+            style={styles.logo}
+          />
 
-          <Caption styleName="h-center" style={styles.caption}>
+          <Title styleName="h-center" style={styles.caption}>
             Conductores
-          </Caption>
+          </Title>
 
           <Spinner />
         </View>
@@ -50,12 +52,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#FFFFFF',
   },
   container: {
     width: '80%',
+    alignItems: 'center',
   },
   logo: {
-    marginBottom: 2,
+    marginBottom: 10,
   },
   caption: {
     marginBottom: 40,
